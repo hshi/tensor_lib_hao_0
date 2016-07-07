@@ -1,0 +1,6 @@
+
+* Disable = sign more tensor_core, try to make tensor_core only abstract class.
+
+* Understand this v.s. &x, do a test, or ask online.
+
+* Remove point function for tensor_hao, it should only for tensor_hao_ref. ==> Check more carefully about reference to pointer.
