@@ -12,23 +12,23 @@ namespace tensor_hao
   protected:
      int L;
      T* p;
-  public:
+
      Tensor_base(void): L(0), p(nullptr) {}
-     Tensor_base(int L_in, T* p_in): L(L_in), p(p_in) {}
      ~Tensor_base() {}
 
+  public:
      //=========
      //FUNCTIONS
      //=========
  
-     const int size() const {return L;}
+     inline const int size() const {return L;}
 
-     const T * data() const {return p;}
-           T * data()       {return p;}
+     inline const T * data() const {return p;}
+     inline       T * data()       {return p;}
 
      //Return reference to pointer
-     const T *& data_ref() const {return p;}
-           T *& data_ref()       {return p;}
+     inline const T *& data_ref() const {return p;}
+     inline       T *& data_ref()       {return p;}
 
   protected:
      void copy_list(const std::initializer_list <T> &args)
@@ -42,6 +42,11 @@ namespace tensor_hao
          }
          std::copy( args.begin(), args.begin()+args_size, p );
      }
+
+  private:
+     //Avoid program to generater constructor and assigment for Tensor_base. (Suppose to be an abstract class.)
+     Tensor_base(const Tensor_base<T>& x)  { }
+     Tensor_base<T> & operator  = (const Tensor_base<T>& x) { }
 
  }; //end class Tensor_base
 

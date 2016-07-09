@@ -7,7 +7,7 @@ runtest := mpirun -np 4 runtest
 
 
 
-FLAGS   := -Wall -O3 -std=c++11 -I./inc
+FLAGS   := -g -Wall -O3 -std=c++11 -I./inc
 MPIFLG  := 
 MPILIB  := 
 MFLG    := -DUSE_MKL -fopenmp -m64 -I/opt/intel/mkl/include

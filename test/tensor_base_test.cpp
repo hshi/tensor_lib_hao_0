@@ -15,11 +15,5 @@ void Tensor_base_test()
 
     if(rank==0)
     {
-        const int L=5;
-        double p[L]={1.0,2.0,3.0,4.0,5.0};
-        Tensor_base<double> base(L, p);
-
-        cout<<base.size()<<endl;
-        cout<<(base.data())[1]<<endl;
     }
 }

@@ -26,7 +26,7 @@ namespace tensor_hao
          int  len = sizeof...(Values);
          int vals[] = {inputs...};
 
-         if( (len+1) != D) {std::cout<<"Length of inputs number is not consistent with template class!!! "<<len<<" "<<D<<std::endl; exit(1);}
+         if( (len+1) != D) {std::cout<<"Length of inputs number is not consistent with template class!!! "<<len+1<<" "<<D<<std::endl; exit(1);}
 
          this->n[0] = input;
          if(len>0) std::copy(vals, vals+len, this->n+1);

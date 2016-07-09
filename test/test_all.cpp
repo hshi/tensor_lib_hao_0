@@ -13,6 +13,7 @@ using namespace std;
 void Tensor_base_test();
 void Tensor_hao_test();
 void Tensor_hao_ref_test();
+void Tensor_core_test();
 
 int main(int argc, char** argv)
 {
@@ -30,6 +31,7 @@ int main(int argc, char** argv)
     Tensor_base_test();
     Tensor_hao_test();
     Tensor_hao_ref_test();
+    Tensor_core_test();
 
 #ifdef USE_MAGMA
     magma_finalize();
