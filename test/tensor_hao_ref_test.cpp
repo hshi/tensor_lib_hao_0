@@ -4,6 +4,8 @@
 #include <cmath>
 #include "tensor_hao.h"
 #include "tensor_hao_ref.h"
+#include <typeinfo>
+
 
 using namespace std;
 using namespace tensor_hao;
@@ -36,6 +38,26 @@ void Tensor_hao_ref_variadic_constructor_test()
 
     if(flag==0) cout<<"Tensor_hao_ref variadic constructor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao_ref variadic constructor failed double test!"<<endl;
+}
+
+void Tensor_hao_ref_pointer_constructor_test()
+{
+    const int D=3;
+    int n_ptr[D] = {3,4,7};
+    Tensor_hao_ref<double, D>  tensor_ref(n_ptr);
+    int size=84;
+    int n[D]={3,4,7};
+    int n_step[D]={1,3,12};
+
+    int flag=0;
+
+    if(tensor_ref.data() ) flag++;
+    if(tensor_ref.size() != size ) flag++;
+    for(int i=0; i<D; i++)  {if( tensor_ref.rank(i) != n[i] ) flag++;}
+    for(int i=0; i<D; i++)  {if( tensor_ref.rank_step(i) != n_step[i] ) flag++;}
+
+    if(flag==0) cout<<"Tensor_hao_ref pointer constructor passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_hao_ref pointer constructor failed double test!"<<endl;
 }
 
 
@@ -88,8 +110,29 @@ void Tensor_hao_ref_point_test()
     if(tensor_ref.data()   != vec.data() ) flag++;
     if(tensor_ref_p.data() != vec.data() ) flag++;
 
-     if(flag==0) cout<<"Tensor_hao_ref point function passed double test!"<<endl;
-     else cout<<"WARNING!!!!Tensor_hao_ref point function failed double test!"<<endl;
+    if(flag==0) cout<<"Tensor_hao_ref point function passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_hao_ref point function failed double test!"<<endl;
+}
+
+void Tensor_hao_ref_slice_test()
+{
+    Tensor_hao_ref<double,3>  tensor(3,4,5);
+    int L = tensor.size(); vector<double> p(L);
+    for(int i=0; i<L; i++) p[i] = i*1.0;
+    tensor.point(p);
+
+    Tensor_hao_ref<double,2 >  slice = tensor[4];
+
+    int flag=0;
+    int slice_L = slice.size(); double* slice_p = slice.data();
+    for(int i=0; i<slice_L; i++) 
+    {
+        if( std::abs( slice_p[i]- (i+12*4.0) ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"Tensor_hao_ref slice function passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_hao_ref slice function failed double test!"<<endl;
+
 }
 
 void Tensor_hao_ref_test()
@@ -103,7 +146,9 @@ void Tensor_hao_ref_test()
     {
         Tensor_hao_ref_void_constructor_test();
         Tensor_hao_ref_variadic_constructor_test();
+        Tensor_hao_ref_pointer_constructor_test();
         Tensor_hao_ref_constructor_assginment_test();
         Tensor_hao_ref_point_test();
+        Tensor_hao_ref_slice_test();
     }
 }

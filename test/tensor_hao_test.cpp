@@ -38,6 +38,27 @@ void Tensor_hao_variadic_constructor_test()
     else cout<<"WARNING!!!!Tensor_hao variadic constructor failed double test!"<<endl;
 }
 
+
+void Tensor_hao_pointer_constructor_test()
+{
+    const int D=3;
+    int n_ptr[D] = {3,4,7};
+    Tensor_hao<double, D>  tensor(n_ptr);
+    int size=84;
+    int n[D]={3,4,7};
+    int n_step[D]={1,3,12};
+
+    int flag=0;
+
+    if( !tensor.data() ) flag++;
+    if(tensor.size() != size ) flag++;
+    for(int i=0; i<D; i++)  {if( tensor.rank(i) != n[i] ) flag++;}
+    for(int i=0; i<D; i++)  {if( tensor.rank_step(i) != n_step[i] ) flag++;}
+
+    if(flag==0) cout<<"Tensor_hao pointer constructor passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_hao pointer constructor failed double test!"<<endl;
+}
+
 void Tensor_hao_copy_constructor_test()
 {
     Tensor_hao<double,2>  tensor_a(3,4);
@@ -195,6 +216,7 @@ void Tensor_hao_test()
     {
         Tensor_hao_void_constructor_test();
         Tensor_hao_variadic_constructor_test();
+        Tensor_hao_pointer_constructor_test();
         Tensor_hao_copy_constructor_test();
         Tensor_hao_move_constructor_test();
         Tensor_hao_copy_ref_constructor_test();

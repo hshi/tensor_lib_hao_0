@@ -5,6 +5,7 @@ The c++ tensor library, it supports many dimension array and uses lapack blas li
 
 * Add all for debug flag
 * Add more inline
-* Learn more about Variadic template 
+* Check slice function
+* Change the order about test: ref first, hao second, core, then element wise.
 
 This project is licensed under the terms of the MIT license.

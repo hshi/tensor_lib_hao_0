@@ -3,6 +3,7 @@
 
 #include <iomanip>
 #include "tensor_core.h"
+#include "tensor_hao_ref.h"
 
 namespace tensor_hao
 {
@@ -24,12 +25,11 @@ namespace tensor_hao
      Tensor_hao(int input, Values... inputs)
      {
          int  len = sizeof...(Values);
-         int vals[] = {inputs...};
+         int vals[] = {input, inputs...};
 
          if( (len+1) != D) {std::cout<<"Length of inputs number is not consistent with template class!!! "<<len+1<<" "<<D<<std::endl; exit(1);}
 
-         this->n[0] = input;
-         if(len>0) std::copy(vals, vals+len, this->n+1);
+         std::copy(vals, vals+D, this->n);
 
          this->n_step[0]=1; for(int i=1; i<D; i++) {this->n_step[i] = (this->n_step[i-1]) * (this->n[i-1]);}
 
@@ -40,6 +40,18 @@ namespace tensor_hao
          //std::cout<<"In Tensor_hao Variadic constructor "<<std::endl;
      }
 
+     Tensor_hao(const int* n_ptr)
+     {
+         std::copy(n_ptr, n_ptr+D, this->n);
+
+         this->n_step[0]=1; for(int i=1; i<D; i++) {this->n_step[i] = (this->n_step[i-1]) * (this->n[i-1]);}
+
+         this->L = this->n_step[D-1] * ( this->n[D-1] );
+
+         this->p = new T[this->L];
+
+         //std::cout<<"In Tensor_hao pointer constructor "<<std::endl;
+     }
 
      Tensor_hao(const Tensor_hao<T, D>& x)
      {
@@ -99,70 +111,60 @@ namespace tensor_hao
      //=========
      //FUNCTIONS
      //=========
-
+     Tensor_hao_ref<T, D-1> operator[](size_t i)
+     {
+         Tensor_hao_ref<T, D-1> A (this->n);
+         T *& A_p = A.data_ref();
+         A_p = this->p + i * this->n_step[D-1];
+         return A;
+     }
 
   private:
      void copy_deep_constructor(const Tensor_core<T, D>& x)
      {
-         for(int i=0; i<D; i++)
-         {
-             this->n[i]=x.rank(i);
-             this->n_step[i]=x.rank_step(i);
-         }
-         this->L = x.size();
+         std::copy(x.n,      x.n+D,      this->n     );
+         std::copy(x.n_step, x.n_step+D, this->n_step);
+         this->L = x.L;
 
          this->p = new T[this->L];
-         const T* xp=x.data();
-         std::copy(xp, xp+(this->L), this->p);
+         std::copy(x.p, x.p+(this->L), this->p);
      }
 
      void move_deep_constructor(Tensor_core<T, D>& x)
      {
-         for(int i=0; i<D; i++)
-         {
-             this->n[i]=x.rank(i);
-             this->n_step[i]=x.rank_step(i);
-         }
-         this->L = x.size();
+         std::copy(x.n,      x.n+D,      this->n     );
+         std::copy(x.n_step, x.n_step+D, this->n_step);
+         this->L = x.L;
 
-         T*& xp = x.data_ref(); //Get reference to pointer x.p
-         this->p = xp;
-         xp = nullptr;
+         this->p = x.p;
+         x.p = nullptr;
      }
 
      void copy_deep_assignment(const Tensor_core<T, D>& x)
      {
-         for(int i=0; i<D; i++)
-         {
-             this->n[i]=x.rank(i);
-             this->n_step[i]=x.rank_step(i);
-         }
+         std::copy(x.n,      x.n+D,      this->n     );
+         std::copy(x.n_step, x.n_step+D, this->n_step);
 
-         if( this->L != x.size() )
+         if( this->L != x.L )
          {
-             this->L = x.size();
+             this->L = x.L;
              if(this->p) delete[] this->p;
              this->p = new T[this->L]; 
          }
 
-         const T* xp=x.data();
-         std::copy(xp, xp+(this->L), this->p);
+         std::copy(x.p, x.p+(this->L), this->p);
      }
 
      void move_deep_assignment(Tensor_core<T, D>& x)
      {
-         for(int i=0; i<D; i++)
-         {
-             this->n[i]=x.rank(i);
-             this->n_step[i]=x.rank_step(i);
-         }
-         this->L = x.size();
+         std::copy(x.n,      x.n+D,      this->n     );
+         std::copy(x.n_step, x.n_step+D, this->n_step);
+         this->L = x.L;
 
          //SWAP
-         T*& xp = x.data_ref(); //Get reference to pointer x.p
          T* p_temp = this->p; 
-         this->p = xp;
-         xp = p_temp;
+         this->p = x.p;
+         x.p = p_temp;
      }
 
  }; //end class Tensor_hao

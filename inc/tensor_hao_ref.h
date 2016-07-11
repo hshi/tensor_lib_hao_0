@@ -24,12 +24,11 @@ namespace tensor_hao
      Tensor_hao_ref(int input, Values... inputs)
      {
          int  len = sizeof...(Values);
-         int vals[] = {inputs...};
+         int vals[] = {input, inputs...};
 
          if( (len+1) != D) {std::cout<<"Length of inputs number is not consistent with template class!!! "<<len+1<<" "<<D<<std::endl; exit(1);}
 
-         this->n[0] = input;
-         if(len>0) std::copy(vals, vals+len, this->n+1);
+         std::copy(vals, vals+D, this->n);
 
          this->n_step[0]=1; for(int i=1; i<D; i++) {this->n_step[i] = (this->n_step[i-1]) * (this->n[i-1]);}
 
@@ -38,13 +37,26 @@ namespace tensor_hao
          this->p = nullptr;
      }
 
-     Tensor_hao_ref(Tensor_hao_ref<T, D>& x)
+     Tensor_hao_ref(const int* n_ptr)
+     {
+         std::copy(n_ptr, n_ptr+D, this->n);
+
+         this->n_step[0]=1; for(int i=1; i<D; i++) {this->n_step[i] = (this->n_step[i-1]) * (this->n[i-1]);}
+
+         this->L = this->n_step[D-1] * ( this->n[D-1] );
+
+         this->p = nullptr;
+
+         //std::cout<<"In Tensor_hao_ref pointer constructor "<<std::endl;
+     }
+
+     Tensor_hao_ref(const Tensor_hao_ref<T, D>& x)
      {
          copy_ref(x);
          //std::cout<<"In Tensor_hao_ref constructor "<<std::endl;
      }
 
-     Tensor_hao_ref(Tensor_core<T, D>& x)
+     Tensor_hao_ref(const Tensor_core<T, D>& x)
      {
          copy_ref(x);
          //std::cout<<"In Tensor_core constructor "<<std::endl;
@@ -52,14 +64,14 @@ namespace tensor_hao
 
      ~Tensor_hao_ref() {}
 
-     Tensor_hao_ref<T, D> & operator  = (Tensor_hao_ref<T, D>& x) 
+     Tensor_hao_ref<T, D>& operator  = (const Tensor_hao_ref<T, D>& x) 
      {
          if(&x!=this) copy_ref(x);
          //std::cout<<"In Tensor_hao_ref assginment "<<std::endl;
          return *this;
      }
 
-     Tensor_hao_ref<T, D> & operator  = (Tensor_core<T, D>& x)
+     Tensor_hao_ref<T, D> & operator  = (const Tensor_core<T, D>& x)
      {
          if(&x!=this) copy_ref(x);
          //std::cout<<"In Tensor_core assginment "<<std::endl;
@@ -90,16 +102,27 @@ namespace tensor_hao
          this->p=vec.data();
      }
 
-  private:
-     void copy_ref(Tensor_core<T, D>& x)
+     Tensor_hao_ref<T, D-1> operator[] (size_t i)
      {
-         for(int i=0; i<D; i++)
+         if( i > ( this->n[D-1] ) || i<0 )
          {
-             this->n[i]=x.rank(i);
-             this->n_step[i]=x.rank_step(i);
+             std::cout<<"Slice i not consistent with n[D-1] !!\n";
+             std::cout<<i<<" "<<this->n[D-1]<<std::endl;
+             exit(1);
          }
-         this->L = x.size();
-         this->p = x.data();
+         Tensor_hao_ref<T, D-1> A (this->n);
+         T *& Ap = A.data_ref();
+         Ap = this->p + i * this->n_step[D-1];
+         return A;
+     }
+
+  private:
+     void copy_ref(const Tensor_core<T, D>& x)
+     {
+         std::copy(x.n,      x.n+D,      this->n     );
+         std::copy(x.n_step, x.n_step+D, this->n_step);
+         this->L = x.L;
+         this->p = x.p;
      }
 
  }; //end class Tensor_hao_ref

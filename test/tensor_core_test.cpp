@@ -8,6 +8,20 @@
 using namespace std;
 using namespace tensor_hao;
 
+void Tensor_core_nptr_test()
+{
+    Tensor_hao<double,5>  tensor(2,3,4,5,6);
+    const int* n_ptr = tensor.n_ptr();
+    int flag=0;
+    for(int i=0; i<5; i++)
+    {
+        if( n_ptr[i] != (i+2) ) flag++;
+    }
+
+    if(flag==0) cout<<"Tensor_core passed n_ptr test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_core failed n_ptr test!"<<endl;    
+}
+
 void Tensor_core_read_1_test()
 {
     Tensor_hao<double,1>  tensor(3);
@@ -241,6 +255,7 @@ void Tensor_core_test()
 
     if(rank==0)
     {
+        Tensor_core_nptr_test();
         Tensor_core_read_1_test();
         Tensor_core_write_1_test();
         Tensor_core_read_2_test();
