@@ -111,8 +111,14 @@ namespace tensor_hao
      //=========
      //FUNCTIONS
      //=========
-     Tensor_hao_ref<T, D-1> operator[](size_t i)
+     Tensor_hao_ref<T, D-1> operator[] (size_t i)
      {
+         if( i > ( this->n[D-1] ) || i<0 )
+         {
+             std::cout<<"Slice i not consistent with n[D-1] !!\n";
+             std::cout<<i<<" "<<this->n[D-1]<<std::endl;
+             exit(1);
+         }
          Tensor_hao_ref<T, D-1> A (this->n);
          T *& A_p = A.data_ref();
          A_p = this->p + i * this->n_step[D-1];

@@ -4,8 +4,6 @@
 #include <cmath>
 #include "tensor_hao.h"
 #include "tensor_hao_ref.h"
-#include <typeinfo>
-
 
 using namespace std;
 using namespace tensor_hao;

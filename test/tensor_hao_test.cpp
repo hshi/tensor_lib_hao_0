@@ -205,6 +205,27 @@ void Tensor_hao_copy_ref_assignment_test()
 
 }
 
+void Tensor_hao_slice_test()
+{
+    Tensor_hao<double,3>  tensor(3,4,5);
+    int L = tensor.size(); double* p = tensor.data();
+    for(int i=0; i<L; i++) p[i] = i*1.0;
+
+    Tensor_hao_ref<double,2 >  slice = tensor[4];
+
+    int flag=0;
+    int slice_L = slice.size(); double* slice_p = slice.data();
+    for(int i=0; i<slice_L; i++)
+    {
+        if( std::abs( slice_p[i]- (i+12*4.0) ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"Tensor_hao slice function passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_hao slice function failed double test!"<<endl;
+
+}
+
+
 void Tensor_hao_test()
 {
     int rank=0;
@@ -223,6 +244,7 @@ void Tensor_hao_test()
         Tensor_hao_copy_assignment_test();
         Tensor_hao_move_assignment_test();
         Tensor_hao_copy_ref_assignment_test();
+        Tensor_hao_slice_test();
     }
 
 }

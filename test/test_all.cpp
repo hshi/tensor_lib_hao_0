@@ -10,8 +10,8 @@
 
 using namespace std;
 
-void Tensor_hao_test();
 void Tensor_hao_ref_test();
+void Tensor_hao_test();
 void Tensor_core_test();
 void Tensor_element_wise_test();
 
@@ -28,8 +28,8 @@ int main(int argc, char** argv)
 #endif
 
     if(rank==0)  cout<<"\n\n\n=======Testing======="<<endl;
-    Tensor_hao_test();
     Tensor_hao_ref_test();
+    Tensor_hao_test();
     Tensor_core_test();
     Tensor_element_wise_test();
 
