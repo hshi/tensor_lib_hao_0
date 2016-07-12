@@ -171,6 +171,97 @@ void Tensor_divide_Tensor_test()
     else cout<<"WARNING!!!!Tensor / Tensor failed double test!"<<endl;
 }
 
+void Tensor_T_add_test()
+{
+    Tensor_hao<double,3>  tensor_a(3,4,5);
+    int L = tensor_a.size();
+    double* p_a = tensor_a.data();
+    for(int i=0; i<L; i++) p_a[i] = i*2.0;
+
+    double b =3.0;
+
+    //Tensor_hao_ref<double,3> tensor_a_ref = tensor_a;
+    Tensor_hao<double,3> tensor_c = tensor_a + b ;
+    double* p_c = tensor_c.data();
+
+    int flag=0;
+    for(int i=0; i<L; i++)
+    {
+        if( std::abs( p_c[i]-i*2.0-3.0 ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"Tensor T + passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor T + failed double test!"<<endl;
+}
+
+void Tensor_T_minus_test()
+{
+    Tensor_hao<double,3>  tensor_a(3,4,5);
+    int L = tensor_a.size();
+    double* p_a = tensor_a.data();
+    for(int i=0; i<L; i++) p_a[i] = i*2.0;
+
+    double b =3.0;
+
+    //Tensor_hao_ref<double,3> tensor_a_ref = tensor_a;
+    Tensor_hao<double,3> tensor_c = tensor_a -b;
+    double* p_c = tensor_c.data();
+
+    int flag=0;
+    for(int i=0; i<L; i++)
+    {
+        if( std::abs( p_c[i]-i*2.0+3.0 ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"Tensor T - passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor T - failed double test!"<<endl;
+}
+
+void Tensor_T_time_test()
+{
+    Tensor_hao<double,3>  tensor_a(3,4,5);
+    int L = tensor_a.size();
+    double* p_a = tensor_a.data();
+    for(int i=0; i<L; i++) p_a[i] = i*2.0;
+
+    double b =3.0;
+
+    //Tensor_hao_ref<double,3> tensor_a_ref = tensor_a;
+    Tensor_hao<double,3> tensor_c = tensor_a * b  ;
+    double* p_c = tensor_c.data();
+
+    int flag=0;
+    for(int i=0; i<L; i++)
+    {
+        if( std::abs( p_c[i]-i*2.0*3.0 ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"Tensor T * passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor T * failed double test!"<<endl;
+}
+
+void Tensor_T_div_test()
+{
+    Tensor_hao<double,3>  tensor_a(3,4,5);
+    int L = tensor_a.size();
+    double* p_a = tensor_a.data();
+    for(int i=0; i<L; i++) p_a[i] = i*2.0;
+
+    double b =3.0;
+
+    //Tensor_hao_ref<double,3> tensor_a_ref = tensor_a;
+    Tensor_hao<double,3> tensor_c = tensor_a / b ;
+    double* p_c = tensor_c.data();
+
+    int flag=0;
+    for(int i=0; i<L; i++)
+    {
+        if( std::abs( p_c[i]-i*2.0/3.0 ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"Tensor T / passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor T / failed double test!"<<endl;
+}
 
 
 void Tensor_element_wise_test()
@@ -189,5 +280,9 @@ void Tensor_element_wise_test()
         Tensor_minus_Tensor_test();
         Tensor_time_Tensor_test();
         Tensor_divide_Tensor_test();
+        Tensor_T_add_test();
+        Tensor_T_minus_test();
+        Tensor_T_time_test();
+        Tensor_T_div_test();
     }
 }
