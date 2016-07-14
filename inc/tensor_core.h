@@ -170,50 +170,50 @@ namespace tensor_hao
      //=====================================================================
 
 
-     void operator += (const Tensor_core<T,D>& x) 
+     inline void operator += (const Tensor_core<T,D>& x) 
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator += "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]+=x.p[i];
      }
 
 
-     void operator -= (const Tensor_core<T,D>& x)
+     inline void operator -= (const Tensor_core<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator -= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]-=x.p[i];
      }
 
-     void min_add_equal(const Tensor_core<T,D>& x)
+     inline void min_add_equal(const Tensor_core<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator min_add_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]=x.p[i]-p[i];
      }
 
-     void operator *= (const Tensor_core<T,D>& x)
+     inline void operator *= (const Tensor_core<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator *= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]*=x.p[i];
      }
 
-     void operator /= (const Tensor_core<T,D>& x)
+     inline void operator /= (const Tensor_core<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator /= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]/=x.p[i];
      }
 
-     void inv_div_equal(const Tensor_core<T,D>& x)
+     inline void inv_div_equal(const Tensor_core<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator inv_div_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i] = x.p[i]/p[i];
      }
 
 
-     void operator +=   (T x) { for(int i=0; i<L; i++) p[i] += x;      }
-     void operator -=   (T x) { for(int i=0; i<L; i++) p[i] -= x;      }
-     void min_add_equal (T x) { for(int i=0; i<L; i++) p[i] =  x-p[i]; }
-     void operator *=   (T x) { for(int i=0; i<L; i++) p[i] *= x;      }
-     void operator /=   (T x) { for(int i=0; i<L; i++) p[i] /= x;      }
-     void inv_div_equal (T x) { for(int i=0; i<L; i++) p[i] =  x/p[i]; }
+     inline void operator +=   (T x) { for(int i=0; i<L; i++) p[i] += x;      }
+     inline void operator -=   (T x) { for(int i=0; i<L; i++) p[i] -= x;      }
+     inline void min_add_equal (T x) { for(int i=0; i<L; i++) p[i] =  x-p[i]; }
+     inline void operator *=   (T x) { for(int i=0; i<L; i++) p[i] *= x;      }
+     inline void operator /=   (T x) { for(int i=0; i<L; i++) p[i] /= x;      }
+     inline void inv_div_equal (T x) { for(int i=0; i<L; i++) p[i] =  x/p[i]; }
 
   protected:
      void copy_list(const std::initializer_list <T> &args)

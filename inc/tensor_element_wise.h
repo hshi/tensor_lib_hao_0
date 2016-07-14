@@ -180,6 +180,25 @@ namespace tensor_hao
  template <class T, int D>
  Tensor_hao<T,D> operator / (T B,const Tensor_hao_ref<T,D>& A) {Tensor_hao<T,D> C=A; C.inv_div_equal(B);return C;}
 
+ //for diff: return the different elements in two Tensors
+ template <class T, int D>
+ int diff(const Tensor_core<T,D>& A, const Tensor_core<T,D>& B, double eta)
+ {
+    //Use std::abs instead of abs is very important here since it is in header file
+    //For normal cpp file, if we use " using namespace std; ", we are using std:abs
+    //To see the difference, run the following line:
+    //std::cout<<abs(0.123)<<" "<<std::abs(0.123)<<std::endl;
+    //The result is 0 and 0.123
+
+    int flag=0; double abs_eta=std::abs(eta);
+
+    for(int i=0; i<D; i++) { if( A.rank(i) != B.rank(i) ) flag++; }
+    for(int i=0; i<D; i++) { if( A.rank_step(i) != B.rank_step(i) ) flag++; }
+    if(A.size() != B.size() ) flag++;
+    const T* A_p = A.data(); const T* B_p = B.data();
+    for(int i=0; i<A.size(); i++) { if( std::abs( A_p[i]- B_p[i] )> abs_eta  ) flag++; }
+    return flag;
+ }
 
 
 } //end namespace tensor_hao

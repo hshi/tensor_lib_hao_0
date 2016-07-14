@@ -3,9 +3,9 @@ tensor_lib_hao
 
 The c++ tensor library, it supports many dimension array and uses lapack blas libaray.
 
-* Add all for debug flag
-* Add more inline
-* Check slice function
-* Change the order about test: ref first, hao second, core, then element wise.
-
 This project is licensed under the terms of the MIT license.
+
+* Test lapacke/cblas, mkl, and acml
+* Change all size_t to int
+* Update tensor_all.h
+* Update magma part, make it optional in CMAKELIST.TXT, IF FOUND THEN COMPILE THE PART

@@ -102,7 +102,7 @@ namespace tensor_hao
          this->p=vec.data();
      }
 
-     Tensor_hao_ref<T, D-1> operator[] (size_t i)
+     Tensor_hao_ref<T, D-1> operator[] (int i)
      {
          if( i > ( this->n[D-1] ) || i<0 )
          {

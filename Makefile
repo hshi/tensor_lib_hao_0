@@ -7,11 +7,13 @@ runtest := mpirun -np 4 runtest
 
 
 
-FLAGS   := -g -Wall -O3 -std=c++11 -I./inc
+FLAGS   := -g -Wall -std=c++11 -I./inc
 MPIFLG  := 
 MPILIB  := 
-MFLG    := -DUSE_MKL -fopenmp -m64 -I/opt/intel/mkl/include
-MLIB    := -Wl,--no-as-needed -L/opt/intel/mkl/lib/intel64 -lmkl_intel_lp64 -lmkl_core -lmkl_gnu_thread -ldl -lpthread -lm
+MFLG    := -DUSE_BLAS_LAPACK  #-DFORTRAN_NO_TRAILING_UNDERSCORE
+MLIB    := -L/usr/lib64 -lblas -llapack
+#MFLG    := -DUSE_MKL -fopenmp -m64 -I${MKL}include
+#MLIB    := -Wl,--no-as-needed -L${MKL}/lib/intel64 -lmkl_intel_lp64 -lmkl_core -lmkl_gnu_thread -ldl -lpthread -lm
 
 
 FLAGSALL:= $(FLAGS) $(MPIFLG) $(MFLG) 

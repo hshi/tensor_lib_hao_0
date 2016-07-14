@@ -263,6 +263,20 @@ void Tensor_T_div_test()
     else cout<<"WARNING!!!!Tensor T / failed double test!"<<endl;
 }
 
+void Tensor_diff_test()
+{
+    Tensor_hao<double,2>  tensor_a(3,4);
+    Tensor_hao<double,2>  tensor_b(3,4);
+    Tensor_hao_ref<double,2>  tensor_b_ref(tensor_b);
+    tensor_a = {1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.};
+    tensor_b = {1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.};
+ 
+    int flag=diff(tensor_a, tensor_b_ref, 1e-12);
+
+    if(flag==0) cout<<"Tensor diff passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor diff failed double test!"<<endl;
+}
+
 
 void Tensor_element_wise_test()
 {
@@ -284,5 +298,6 @@ void Tensor_element_wise_test()
         Tensor_T_minus_test();
         Tensor_T_time_test();
         Tensor_T_div_test();
+        Tensor_diff_test();
     }
 }
