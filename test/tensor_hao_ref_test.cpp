@@ -148,5 +148,6 @@ void Tensor_hao_ref_test()
         Tensor_hao_ref_constructor_assginment_test();
         Tensor_hao_ref_point_test();
         Tensor_hao_ref_slice_test();
+        cout<<endl;
     }
 }

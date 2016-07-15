@@ -299,5 +299,6 @@ void Tensor_element_wise_test()
         Tensor_T_time_test();
         Tensor_T_div_test();
         Tensor_diff_test();
+        cout<<endl;
     }
 }

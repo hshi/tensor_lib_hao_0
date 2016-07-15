@@ -547,6 +547,7 @@ void Tensor_core_test()
         Tensor_core_time_equal_T_test();
         Tensor_core_divide_equal_T_test();
         Tensor_core_inv_div_equal_T_test();
+        cout<<endl;
     }
 
 }

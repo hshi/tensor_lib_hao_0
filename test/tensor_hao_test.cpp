@@ -245,6 +245,7 @@ void Tensor_hao_test()
         Tensor_hao_move_assignment_test();
         Tensor_hao_copy_ref_assignment_test();
         Tensor_hao_slice_test();
+        cout<<endl;
     }
 
 }

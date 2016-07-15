@@ -183,6 +183,7 @@ void Tensor_2d_common_fun_test()
         D_Multi_Matrix_test();
         Tensor_2d_check_skew_symmetric_test();
         pfaffian_test();
+        cout<<endl;
     }
 
 }

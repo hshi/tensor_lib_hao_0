@@ -31,13 +31,48 @@ namespace tensor_hao
  /*****************************************/
  /*Diagonalize symmetric/ Hermitian Matrix*/
  /*****************************************/
+
  void eigen_cpu(Tensor_core<double,2>& A, Tensor_core<double,1>& W, char JOBZ='V', char UPLO='U');
  void eigen_cpu(Tensor_core<std::complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ='V', char UPLO='U');
+
 
  /*****************************/
  /*Construct LUDecomp with CPU*/
  /*****************************/
+
  LUDecomp< std::complex<double> > LUconstruct_cpu(const Tensor_core<std::complex<double>,2>& x);
+ LUDecomp< std::complex<double> > LUconstruct_cpu(Tensor_hao<std::complex<double>,2>&& x);
+
+
+ /*******************/
+ /*Inverse of matrix*/
+ /*******************/
+
+ Tensor_hao<std::complex<double>,2> inverse_cpu(const LUDecomp<std::complex<double>>& x);
+ Tensor_hao<std::complex<double>,2> inverse_cpu(LUDecomp<std::complex<double>>&& x);
+
+
+ /*********************************************************/
+ /*Solve linear equation of matrix A*M=B: return M=A^{-1}B*/
+ /*********************************************************/
+
+ Tensor_hao<std::complex<double>,2> solve_lineq_cpu(const LUDecomp<std::complex<double>>& x, const Tensor_core<std::complex<double>,2>& B, char TRANS='N');
+ Tensor_hao<std::complex<double>,2> solve_lineq_cpu(const LUDecomp<std::complex<double>>& x, Tensor_hao<std::complex<double>,2>&& B, char TRANS='N');
+
+
+ /***********************************************************/
+ /*QR decompostion of matrix ph, return the determinant of R*/
+ /***********************************************************/
+
+ double QRMatrix_cpu(Tensor_core<std::complex<double>,2>& ph);
+ double QRMatrix_cpu(Tensor_core<std::complex<double>,2>& ph, Tensor_core<double,1>& det_list);
+
+
+ /**********************************************************************************************/
+ /*SVD a matrix U = U D V, input U, output U, D, and V. Note: output U and V are unitary matrix*/
+ /**********************************************************************************************/
+
+ void SVDMatrix_cpu(Tensor_core<std::complex<double>,2>& U, Tensor_core<double,1>& D, Tensor_core<std::complex<double>,2>& V);
 
 } //end namespace tensor_hao
 
