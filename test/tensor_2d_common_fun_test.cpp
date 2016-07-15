@@ -53,7 +53,7 @@ void LUDecomp_test()
 
     Tensor_hao<complex<double>,2> A_exact=LU.A;
 
-    size_t flag=0;
+    int flag=0;
 
     LUDecomp<complex<double>> LUC(LU);
     flag+=diff(LUC.A,A_exact,1e-13);
