@@ -15,7 +15,7 @@ void Tensor_hao_void_constructor_test()
     if(tensor.data() ) flag++;
     if(tensor.size() !=0 ) flag++;
 
-    if(flag==0) cout<<"Tensor_hao void constructor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao void constructor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao void constructor failed double test!"<<endl;
 }
 
@@ -34,7 +34,7 @@ void Tensor_hao_variadic_constructor_test()
     for(int i=0; i<D; i++)  {if( tensor.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor.rank_step(i) != n_step[i] ) flag++;}
 
-    if(flag==0) cout<<"Tensor_hao variadic constructor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao variadic constructor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao variadic constructor failed double test!"<<endl;
 }
 
@@ -55,7 +55,7 @@ void Tensor_hao_pointer_constructor_test()
     for(int i=0; i<D; i++)  {if( tensor.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor.rank_step(i) != n_step[i] ) flag++;}
 
-    if(flag==0) cout<<"Tensor_hao pointer constructor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao pointer constructor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao pointer constructor failed double test!"<<endl;
 }
 
@@ -78,7 +78,7 @@ void Tensor_hao_copy_constructor_test()
     for(int i=0; i<D; i++)  {if( tensor_b.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor_b.rank_step(i) != n_step[i] ) flag++;}
     for(int i=0; i<size; i++)  { if(  std::abs(p[i] - p_value[i]) > 1e-12 ) flag++; }
-    if(flag==0) cout<<"Tensor_hao copy constructor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao copy constructor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao copy constructor failed double test!"<<endl;
 
 }
@@ -102,7 +102,7 @@ void Tensor_hao_move_constructor_test()
     for(int i=0; i<D; i++)  {if( tensor_b.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor_b.rank_step(i) != n_step[i] ) flag++;}
     for(int i=0; i<size; i++)  { if(  std::abs(p[i] - p_value[i]) > 1e-12 ) flag++; }
-    if(flag==0) cout<<"Tensor_hao move constructor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao move constructor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao move constructor failed double test!"<<endl;
 
 }
@@ -127,7 +127,7 @@ void Tensor_hao_copy_ref_constructor_test()
     for(int i=0; i<D; i++)  {if( tensor_b.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor_b.rank_step(i) != n_step[i] ) flag++;}
     for(int i=0; i<size; i++)  { if(  std::abs(p[i] - p_value[i]) > 1e-12 ) flag++; }
-    if(flag==0) cout<<"Tensor_hao copy ref constructor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao copy ref constructor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao copy ref constructor failed double test!"<<endl;
 
 }
@@ -151,7 +151,7 @@ void Tensor_hao_copy_assignment_test()
     for(int i=0; i<D; i++)  {if( tensor_b.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor_b.rank_step(i) != n_step[i] ) flag++;}
     for(int i=0; i<size; i++)  { if(  std::abs(p[i] - p_value[i]) > 1e-12 ) flag++; }
-    if(flag==0) cout<<"Tensor_hao copy assignment passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao copy assignment passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao copy assignment failed double test!"<<endl;
 
 }
@@ -175,7 +175,7 @@ void Tensor_hao_move_assignment_test()
     for(int i=0; i<D; i++)  {if( tensor_b.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor_b.rank_step(i) != n_step[i] ) flag++;}
     for(int i=0; i<size; i++)  { if(  std::abs(p[i] - p_value[i]) > 1e-12 ) flag++; }
-    if(flag==0) cout<<"Tensor_hao move assignment passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao move assignment passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao move assignment failed double test!"<<endl;
 
 }
@@ -200,7 +200,7 @@ void Tensor_hao_copy_ref_assignment_test()
     for(int i=0; i<D; i++)  {if( tensor_b.rank(i) != n[i] ) flag++;}
     for(int i=0; i<D; i++)  {if( tensor_b.rank_step(i) != n_step[i] ) flag++;}
     for(int i=0; i<size; i++)  { if(  std::abs(p[i] - p_value[i]) > 1e-12 ) flag++; }
-    if(flag==0) cout<<"Tensor_hao copy ref assignment passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao copy ref assignment passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao copy ref assignment failed double test!"<<endl;
 
 }
@@ -220,7 +220,7 @@ void Tensor_hao_slice_test()
         if( std::abs( slice_p[i]- (i+12*4.0) ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_hao slice function passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_hao slice function passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_hao slice function failed double test!"<<endl;
 
 }

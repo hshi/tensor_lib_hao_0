@@ -105,5 +105,20 @@ namespace tensor_hao
      if(info!=0) {cout<<"Zheevd failed: info= "<< info<<"\n"; exit(1);}
  }
 
+ /******************************************/
+ /*LU Decomposition a complex square Matrix*/
+ /******************************************/
+ LUDecomp<complex<double>> LUconstruct_cpu(const Tensor_core<complex<double>,2>& x)
+ {
+     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!\n"; exit(1);}
+     int N=x.rank(0);
+     LUDecomp<complex<double>> y; y.A=x; y.ipiv=Tensor_hao<int,1>(N);
+
+     F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
+     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal!\n"; exit(1);}
+     return y;
+ }
+
+
 
 } //end namespace tensor_hao

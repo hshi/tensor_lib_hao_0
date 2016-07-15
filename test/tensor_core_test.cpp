@@ -18,7 +18,7 @@ void Tensor_core_nptr_test()
         if( n_ptr[i] != (i+2) ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core passed n_ptr test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core passed n_ptr test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core failed n_ptr test!"<<endl;    
 }
 
@@ -37,7 +37,7 @@ void Tensor_core_read_1_test()
         count++;
     }
 
-    if(flag==0) cout<<"Tensor_core read passed double 1 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core read passed double 1 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core read failed double 1 test!"<<endl;
 }
 
@@ -63,7 +63,7 @@ void Tensor_core_write_1_test()
         count++;
     }
 
-    if(flag==0) cout<<"Tensor_core write passed double 1 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core write passed double 1 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core write failed double 1 test!"<<endl;
 }
 
@@ -87,7 +87,7 @@ void Tensor_core_read_2_test()
         }
     }
 
-    if(flag==0) cout<<"Tensor_core read passed double 2 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core read passed double 2 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core read failed double 2 test!"<<endl;
 }
 
@@ -115,7 +115,7 @@ void Tensor_core_write_2_test()
         count++;
     }
 
-    if(flag==0) cout<<"Tensor_core write passed double 2 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core write passed double 2 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core write failed double 2 test!"<<endl;
 }
 
@@ -141,7 +141,7 @@ void Tensor_core_read_3_test()
         }
     }
 
-    if(flag==0) cout<<"Tensor_core read passed double 3 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core read passed double 3 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core read failed double 3 test!"<<endl;
 }
 
@@ -172,7 +172,7 @@ void Tensor_core_write_3_test()
         count++;
     }
 
-    if(flag==0) cout<<"Tensor_core write passed double 3 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core write passed double 3 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core write failed double 3 test!"<<endl;
 }
 
@@ -204,7 +204,7 @@ void Tensor_core_read_5_test()
         }
     }
 
-    if(flag==0) cout<<"Tensor_core read passed double 5 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core read passed double 5 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core read failed double 5 test!"<<endl;
 }
 
@@ -241,7 +241,7 @@ void Tensor_core_write_5_test()
         count++;
     }
 
-    if(flag==0) cout<<"Tensor_core write passed double 5 test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core write passed double 5 test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core write failed double 5 test!"<<endl;
 }
 
@@ -265,7 +265,7 @@ void Tensor_core_add_equal_Tensor_core_test()
         if( std::abs( p[i]-i*3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core += Tensor_core passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core += Tensor_core passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core += Tensor_core failed double test!"<<endl;
 }
 
@@ -289,7 +289,7 @@ void Tensor_core_minus_equal_Tensor_core_test()
         if( std::abs( p[i]-i*2.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core -= Tensor_core passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core -= Tensor_core passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core -= Tensor_core failed double test!"<<endl;
 }
 
@@ -313,7 +313,7 @@ void Tensor_core_min_add_equal_Tensor_core_test()
         if( std::abs( p[i]+i*2.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core = -Tensor_core + Tensor_core_b passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core = -Tensor_core + Tensor_core_b passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core = -Tensor_core + Tensor_core_b failed double test!"<<endl;
 }
 
@@ -337,7 +337,7 @@ void Tensor_core_time_equal_Tensor_core_test()
         if( std::abs( p[i]-i*i*3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core *= Tensor_core passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core *= Tensor_core passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core *= Tensor_core failed double test!"<<endl;
 }
 
@@ -360,7 +360,7 @@ void Tensor_core_divide_equal_Tensor_core_test()
         if( std::abs( p[i]-3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core /= Tensor_core passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core /= Tensor_core passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core /= Tensor_core failed double test!"<<endl;
 }
 
@@ -383,7 +383,7 @@ void Tensor_core_inv_div_equal_Tensor_core_test()
         if( std::abs( p[i]-1/3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core =  Tensor_core_b / Tensor_core passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core =  Tensor_core_b / Tensor_core passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core =  Tensor_core_b / Tensor_core failed double test!"<<endl;
 }
 
@@ -405,7 +405,7 @@ void Tensor_core_add_equal_T_test()
         if( std::abs( p[i]-i*2.0-3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core += T passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core += T passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core += T failed double test!"<<endl;
 }
 
@@ -426,7 +426,7 @@ void Tensor_core_minus_equal_T_test()
         if( std::abs( p[i]-i*2.0+3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core -= T passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core -= T passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core -= T failed double test!"<<endl;
 }
 
@@ -447,7 +447,7 @@ void Tensor_core_min_add_equal_T_test()
         if( std::abs( p[i]+i*2.0-3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core = -Tensor_core + T passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core = -Tensor_core + T passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core = -Tensor_core + T failed double test!"<<endl;
 }
 
@@ -469,7 +469,7 @@ void Tensor_core_time_equal_T_test()
         if( std::abs( p[i]-i*2.0*3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core *= T passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core *= T passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core *= T failed double test!"<<endl;
 }
 
@@ -490,7 +490,7 @@ void Tensor_core_divide_equal_T_test()
         if( std::abs( p[i]-i*2.0/3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core /= T passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core /= T passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core /= T failed double test!"<<endl;
 }
 
@@ -512,7 +512,7 @@ void Tensor_core_inv_div_equal_T_test()
         if( std::abs( p[i]-3.0/(2.0*i) ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor_core =  T / Tensor_core passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor_core =  T / Tensor_core passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor_core =  T / Tensor_core failed double test!"<<endl;
 }
 

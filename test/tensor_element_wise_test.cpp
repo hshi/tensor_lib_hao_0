@@ -22,7 +22,7 @@ void tensor_conj_test()
             if( std::abs( tensor_b(i,j)-conj( tensor_a(i,j) ) ) >1e-12 ) flag++;
         }
     }
-    if(flag==0) cout<<"Tensor conj passed complex<double> test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor conj passed complex<double> test!"<<endl;
     else cout<<"WARNING!!!!Tensor conj failed complex<double> test!"<<endl;
 
 }
@@ -42,7 +42,7 @@ void tensor_exp_test()
             if( std::abs( tensor_b(i,j)-exp( tensor_a(i,j) ) ) >1e-12 ) flag++;
         }
     }
-    if(flag==0) cout<<"Tensor exp passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor exp passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor exp failed double test!"<<endl;
 
 }
@@ -62,7 +62,7 @@ void tensor_minus_test()
             if( std::abs( tensor_b(i,j) + tensor_a(i,j) ) >1e-12 ) flag++;
         }
     }
-    if(flag==0) cout<<"Tensor minus passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor minus passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor minus failed double test!"<<endl;
 
 }
@@ -89,7 +89,7 @@ void Tensor_add_Tensor_test()
         if( std::abs( p_c[i]-i*3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor + Tensor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor + Tensor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor + Tensor failed double test!"<<endl;
 }
 
@@ -115,7 +115,7 @@ void Tensor_minus_Tensor_test()
         if( std::abs( p_c[i]-i*1.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor - Tensor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor - Tensor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor - Tensor failed double test!"<<endl;
 }
 
@@ -141,7 +141,7 @@ void Tensor_time_Tensor_test()
         if( std::abs( p_c[i]-i*i*2.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor * Tensor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor * Tensor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor * Tensor failed double test!"<<endl;
 }
 
@@ -167,7 +167,7 @@ void Tensor_divide_Tensor_test()
         if( std::abs( p_c[i]-2.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor / Tensor passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor / Tensor passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor / Tensor failed double test!"<<endl;
 }
 
@@ -190,7 +190,7 @@ void Tensor_T_add_test()
         if( std::abs( p_c[i]-i*2.0-3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor T + passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor T + passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor T + failed double test!"<<endl;
 }
 
@@ -213,7 +213,7 @@ void Tensor_T_minus_test()
         if( std::abs( p_c[i]-i*2.0+3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor T - passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor T - passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor T - failed double test!"<<endl;
 }
 
@@ -236,7 +236,7 @@ void Tensor_T_time_test()
         if( std::abs( p_c[i]-i*2.0*3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor T * passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor T * passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor T * failed double test!"<<endl;
 }
 
@@ -259,7 +259,7 @@ void Tensor_T_div_test()
         if( std::abs( p_c[i]-i*2.0/3.0 ) > 1e-12 ) flag++;
     }
 
-    if(flag==0) cout<<"Tensor T / passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor T / passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor T / failed double test!"<<endl;
 }
 
@@ -273,7 +273,7 @@ void Tensor_diff_test()
  
     int flag=diff(tensor_a, tensor_b_ref, 1e-12);
 
-    if(flag==0) cout<<"Tensor diff passed double test!"<<endl;
+    if(flag==0) cout<<"PASSED! Tensor diff passed double test!"<<endl;
     else cout<<"WARNING!!!!Tensor diff failed double test!"<<endl;
 }
 

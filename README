@@ -9,3 +9,6 @@ This project is licensed under the terms of the MIT license.
 * Change all size_t to int
 * Update tensor_all.h
 * Update magma part, make it optional in CMAKELIST.TXT, IF FOUND THEN COMPILE THE PART
+* Check input about Tensor_core, output about Tensor_hao
+* Check about continuous memory for all code!!! (other libraries)
+* Check test <<endl; vs. "\n"

@@ -20,8 +20,8 @@ void gmm_cpu_float_test()
     //gmm_cpu(trans(a), trans(b),c, 'C', 'C');
 
     int flag=diff(c,c_exact,1e-5);
-    if(flag==0) cout<<"Gmm_cpu passed float test! \n";
-    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed float test! \n";
+    if(flag==0) cout<<"PASSED! Gmm_cpu passed float test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed float test!"<<endl;
 }
 
 void gmm_cpu_double_test()
@@ -37,8 +37,8 @@ void gmm_cpu_double_test()
     //gmm_cpu(trans(a), trans(b),c, 'C', 'C');
 
     int flag=diff(c,c_exact,1e-12);
-    if(flag==0) cout<<"Gmm_cpu passed double test! \n";
-    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed double test! \n";
+    if(flag==0) cout<<"PASSED! Gmm_cpu passed double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed double test!"<<endl;
 }
 
 
@@ -55,8 +55,8 @@ void gmm_cpu_complex_float_test()
     //gmm_cpu(conjtrans(a), conjtrans(b),c, 'C', 'C');
 
     int flag=diff(c,c_exact,1e-5);
-    if(flag==0) cout<<"Gmm_cpu passed complex float test! \n";
-    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed complex float test! \n";
+    if(flag==0) cout<<"PASSED! Gmm_cpu passed complex float test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed complex float test!"<<endl;
 }
 
 void gmm_cpu_complex_double_test()
@@ -72,8 +72,8 @@ void gmm_cpu_complex_double_test()
     //gmm_cpu(conjtrans(a), conjtrans(b),c, 'C', 'C');
 
     int flag=diff(c,c_exact,1e-12);
-    if(flag==0) cout<<"Gmm_cpu passed complex double test! \n";
-    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed complex double test! \n";
+    if(flag==0) cout<<"PASSED! Gmm_cpu passed complex double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Gmm_cpu failed complex double test!"<<endl;
 }
 
 void eigen_cpu_double_test()
@@ -93,7 +93,7 @@ void eigen_cpu_double_test()
 
     eigen_cpu(a,w);
 
-    size_t flag=0;
+    int flag=0;
 
     double* p_a = a.data();
     double* p_a_exact = a_exact.data();
@@ -102,8 +102,8 @@ void eigen_cpu_double_test()
         if( abs( abs(p_a[i]) - abs(p_a_exact[i]) )>1e-13 ) flag++;
     }
     flag+=diff(w,w_exact,1e-13);
-    if(flag==0) cout<<"Eigen_cpu passed double symmetric test! \n";
-    else cout<<"WARNING!!!!!!!!! Eigen_cpu failed double symmetric test! \n";
+    if(flag==0) cout<<"PASSED! Eigen_cpu passed double symmetric test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Eigen_cpu failed double symmetric test!"<<endl;
 }
 
 
@@ -130,7 +130,7 @@ void eigen_cpu_complex_double_test()
 
     eigen_cpu(a,w);
 
-    size_t flag=0;
+    int flag=0;
 
     complex<double>* p_a = a.data();
     complex<double>* p_a_exact = a_exact.data();
@@ -139,9 +139,30 @@ void eigen_cpu_complex_double_test()
         if( abs( abs(p_a[i]) - abs(p_a_exact[i]) )>1e-13 ) flag++;
     }
     flag+=diff(w,w_exact,1e-13);
-    if(flag==0) cout<<"Eigen_cpu passed complex double hermition test! \n";
-    else cout<<"WARNING!!!!!!!!! Eigen_cpu failed complex double hermition test! \n";
+    if(flag==0) cout<<"PASSED! Eigen_cpu passed complex double hermition test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Eigen_cpu failed complex double hermition test!"<<endl;
 }
+
+void LUconstruct_cpu_test()
+{
+    Tensor_hao<complex<double>,2> X(3,3), A_exact(3,3);
+
+    X={ {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
+        {3.0,-2.0},   {2.0,0.0},    {5.123,3.11},
+        {2.123,-5.11},{5.123,-6.11},{3,0.0}   };
+
+    A_exact={ {3,4} ,       {0.75236,0.03351999999999994},  {0.12,-0.16},
+              {2,0},        {3.6182800000000004,3.04296},   {0.21807341113346007,-0.647707935025115},
+              {5.123,-6.11},{-1.05914748,4.42519664},       {-0.14942307391746978,-5.208155953378981} };
+
+    LUDecomp<complex<double>> LU=LUconstruct_cpu(X);
+
+    int flag=diff(LU.A,A_exact,1e-13);
+
+    if(flag==0) cout<<"PASSED! LUconstruct_cpu passed complex double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! LUconstruct_cpu failed complex double test!"<<endl;
+}
+
 
 
 void Tensor_2d_bl_cpu_test()
@@ -159,6 +180,7 @@ void Tensor_2d_bl_cpu_test()
         gmm_cpu_complex_double_test();
         eigen_cpu_double_test();
         eigen_cpu_complex_double_test();
+        LUconstruct_cpu_test();
     }
 
 }

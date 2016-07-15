@@ -54,6 +54,8 @@ void F77NAME(zheevd)( const char* jobz, const char* uplo, const int* n,
              BLAS_LAPACK_Complex16* work, const int* lwork, double* rwork,
              const int* lrwork, int* iwork, const int* liwork,
              int* info );
+void F77NAME(zgetrf)( const int* m, const int* n, BLAS_LAPACK_Complex16* a,
+             const int* lda, int* ipiv, int* info );
 
 #ifdef __cplusplus
 }

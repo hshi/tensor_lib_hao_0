@@ -34,6 +34,10 @@ namespace tensor_hao
  void eigen_cpu(Tensor_core<double,2>& A, Tensor_core<double,1>& W, char JOBZ='V', char UPLO='U');
  void eigen_cpu(Tensor_core<std::complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ='V', char UPLO='U');
 
+ /*****************************/
+ /*Construct LUDecomp with CPU*/
+ /*****************************/
+ LUDecomp< std::complex<double> > LUconstruct_cpu(const Tensor_core<std::complex<double>,2>& x);
 
 } //end namespace tensor_hao
 
