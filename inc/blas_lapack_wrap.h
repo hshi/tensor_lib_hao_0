@@ -15,10 +15,9 @@
 
 #ifdef USE_ACML
 
-  #define ACML_Complex8  std::complex<float>
-  #define ACML_Complex16 std::complex<double>
-  #include "acml_customized.h" // change acml.h, see details inside
-  #define F77NAME(x) x##_
+  #define BLAS_LAPACK_Complex8  std::complex<float>
+  #define BLAS_LAPACK_Complex16 std::complex<double>
+  #include "blas_lapack_customized.h" // write own header file in blas F77NAME(x) is defined inside
 
 #endif
 
@@ -28,6 +27,7 @@
   #define BLAS_LAPACK_Complex8  std::complex<float>
   #define BLAS_LAPACK_Complex16 std::complex<double>
   #include "blas_lapack_customized.h" // write own header file in blas F77NAME(x) is defined inside
+
 #endif
 
 #endif
