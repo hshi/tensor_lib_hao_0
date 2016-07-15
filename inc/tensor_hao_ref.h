@@ -93,7 +93,8 @@ namespace tensor_hao
 
      void point(std::vector<T>& vec)
      {
-         if( this->L != vec.size() )
+         int vec_size = vec.size();
+         if( this->L != vec_size )
          {
              std::cout<<"Size is not consistent between ref matrix and vector.\n";
              std::cout<<this->L<<" "<<vec.size()<<std::endl;

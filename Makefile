@@ -14,7 +14,8 @@ MFLG    := -DUSE_BLAS_LAPACK  #-DFORTRAN_NO_UNDERSCORE
 MLIB    := -L/usr/lib64 -lblas -llapack
 #MFLG    := -DUSE_MKL -fopenmp -m64 -I${MKL}include
 #MLIB    := -Wl,--no-as-needed -L${MKL}/lib/intel64 -lmkl_intel_lp64 -lmkl_core -lmkl_gnu_thread -ldl -lpthread -lm
-
+#MFLG    := -DUSE_ACML -I${ACML}/include
+#MLIB    := -L${ACML}/lib -lacml
 
 FLAGSALL:= $(FLAGS) $(MPIFLG) $(MFLG) 
 LIBSALL :=          $(MPILIB) $(MLIB)
