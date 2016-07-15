@@ -7,6 +7,10 @@
 #define F77NAME(x) x##_
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #ifndef BLAS_LAPACK_Complex8
 typedef struct
 {
@@ -21,11 +25,6 @@ typedef struct
 } BLAS_LAPACK_Complex16;
 #endif
 
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
 
 void F77NAME(sgemm)(const char *transa, const char *transb, const int *m, const int *n, const int *k,
            const float *alpha, const float *a, const int *lda, const float *b, const int *ldb,

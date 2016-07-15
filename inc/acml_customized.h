@@ -1,7 +1,10 @@
 /*
  * Changed by Hao Shi to use for tensor_hao library
  * Email: boruoshihao@gmail.com
- * 
+ *
+ * Comment undefine lines
+ * //#undef ACML_Complex8
+ *
  * Change to ACML_Complex16/8
  * :%s/doublecomplex/ACML_Complex16/g
  * :%s/complex/ACML_Complex8/g
@@ -103,7 +106,7 @@
 
 /* Under Windows math.h defines "ACML_Complex8" to mean "_ACML_Complex8". */
 #include <math.h>
-#undef ACML_Complex8
+//#undef ACML_Complex8
 
 #ifdef __cplusplus
 extern "C" {
