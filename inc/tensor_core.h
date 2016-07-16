@@ -25,7 +25,7 @@ namespace tensor_hao
   public:
      inline const int* n_ptr() const {return n;}
 
-     inline const int rank(int i) const 
+     inline int rank(int i) const 
      {
          #ifndef NDEBUG
          if( i >= D || i<0 ) { std::cout<<"Input i for rank() should be [0, D)!!! "<<i<<" "<<D<<std::endl; exit(1); }
@@ -34,7 +34,7 @@ namespace tensor_hao
          return n[i];
      }
 
-     inline const int rank_step(int i) const 
+     inline int rank_step(int i) const 
      {
          #ifndef NDEBUG
          if( i >= D || i<0 ) { std::cout<<"Input i for rank_step() should be [0, D)!!! "<<i<<" "<<D<<std::endl; exit(1); }
@@ -44,7 +44,7 @@ namespace tensor_hao
      }
 
 
-     inline const int size() const {return L;}
+     inline int size() const {return L;}
 
      inline const T * data() const {return p;}
      inline       T * data()       {return p;}
