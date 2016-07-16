@@ -213,6 +213,109 @@ namespace tensor_hao
      if(info!=0) {cout<<"Zheevd failed: info= "<< info<<"\n"; exit(1);}
  }
 
+ /******************************************/
+ /*LU Decomposition a complex square Matrix*/
+ /******************************************/
+
+ LUDecomp<complex<double>> LUconstruct_magma(const Tensor_core<complex<double>,2>& x)
+ {
+     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!\n"; exit(1);}
+
+     //Create LU object
+     LUDecomp<complex<double>> y;
+     y.A    = Tensor_hao< complex<double>, 2 > ( x.n_ptr() );
+     y.ipiv = Tensor_hao<int,1>( x.rank(0) );
+
+     //Prepare for zgetrf
+     magma_int_t M = x.rank(0), N = x.rank(1);
+     magma_int_t LDA = ((M+31)/32)*32; 
+     magmaDoubleComplex_ptr d_A;  magma_zmalloc(&d_A, LDA*N);
+     magma_int_t info;
+
+     //Transfer data and call zgetrf
+     magma_zsetmatrix(M, N, (magmaDoubleComplex* ) x.data(), M, d_A, LDA );
+     magma_zgetrf_gpu(M, N, d_A, LDA, (magma_int_t*) y.ipiv.data(), &info);
+     magma_zgetmatrix(M, N, d_A, LDA, (magmaDoubleComplex* ) y.A.data(), M);
+     y.info=info;
+
+     //Clean
+     magma_free(d_A);
+
+     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_magma!"<<endl; exit(1);}
+     return y;
+ }
+
+
+ /********************************************************************************************************************/
+ /*Inverse of matrix: If determinant of the matrix is outof machine precision, inverse should be fine, since it solve*
+  *The linear equation, every small value is well defined                                                            */
+ /********************************************************************************************************************/
+ Tensor_hao<complex<double>,2> inverse_magma(const LUDecomp<complex<double>>& x)
+ {
+     magma_int_t N=x.A.rank(0); magma_int_t info;
+
+     magmaDoubleComplex_ptr d_A , dwork;
+     magma_int_t lda, ldwork;
+     lda = ((N+31)/32)*32;             //round up to multiple of 32 for best GPU performance
+     ldwork = N*magma_get_zgetri_nb(N); // magma_get_zgetri_nb optimizes the blocksize
+     magma_zmalloc( &d_A, lda*N ); magma_zmalloc( &dwork, ldwork );
+
+     //copy matrix from CPU to GPU
+     magma_zsetmatrix( N, N, (magmaDoubleComplex* )x.A.data(), N, d_A, lda );
+
+     //calculate the inverse matrix with zgetri
+     magma_zgetri_gpu( N, d_A, lda, (magma_int_t*) x.ipiv.data(), dwork, ldwork, &info );
+     if(info<0) {cout<<"The "<<info<<"-th parameter is illegal in inverse_magma!"<<endl; exit(1);}
+
+     //copy matrix from GPU to CPU
+     Tensor_hao<complex<double>,2> A(N,N);
+     magma_zgetmatrix( N, N, d_A, lda, (magmaDoubleComplex* )A.data(), N );
+
+     magma_free(d_A); magma_free(dwork);
+
+     return A;
+ }
+
+
+ /*********************************************************/
+ /*Solve linear equation of matrix A*M=B: return M=A^{-1}B*/
+ /*********************************************************/
+ Tensor_hao<complex<double>,2> solve_lineq_magma(const LUDecomp<complex<double>>& x, const Tensor_core<complex<double>,2>& B, char TRANS)
+ {
+     if( x.A.rank(0) != B.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!\n"; exit(1);}
+     magma_int_t N=B.rank(0); magma_int_t NRHS=B.rank(1); magma_int_t info;
+
+     magma_trans_t Trans = magma_trans_const(TRANS);
+     magmaDoubleComplex_ptr d_A, d_B;
+     magma_int_t lda, ldb;
+     lda = ((N+31)/32)*32;
+     ldb = ((N+31)/32)*32;
+
+     //allocate memory on GPU
+     magma_zmalloc( &d_A, lda*N );
+     magma_zmalloc( &d_B, ldb*NRHS );
+
+     //copy matrix from CPU to GPU
+     magma_zsetmatrix( N, N,    (magmaDoubleComplex* )x.A.data(), N, d_A, lda );
+     magma_zsetmatrix( N, NRHS, (magmaDoubleComplex* )B.data(),   N, d_B, ldb );
+
+     //Solve the equation
+     magma_zgetrs_gpu( Trans, N, NRHS, d_A, lda, (magma_int_t*)x.ipiv.data(), d_B, ldb, &info );
+     if(info!=0)
+     {
+         cout<<"Solve linear equation is not suceesful: "<<info<<"-th parameter is illegal! \n";
+         exit(1);
+     }
+
+     //copy matrix from GPU to CPU
+     Tensor_hao<complex<double>,2> M(N,NRHS);
+     magma_zgetmatrix( N, NRHS, d_B, ldb, (magmaDoubleComplex* ) M.data(), N );
+
+     //free memory
+     magma_free( d_A );  magma_free( d_B );
+
+     return M;
+ }
 
 } //end namespace tensor_hao
 

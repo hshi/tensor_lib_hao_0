@@ -39,20 +39,18 @@ namespace tensor_hao
  void eigen_magma(Tensor_core<std::complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ='V', char UPLO='U');
 
 
- /*****************************/
- /*Construct LUDecomp with CPU*/
- /*****************************/
+ /****************************************************************************/
+ /*Construct LUDecomp, use GPU interface, only one LUconstruct_magma is okay.*/
+ /****************************************************************************/
 
  LUDecomp< std::complex<double> > LUconstruct_magma(const Tensor_core<std::complex<double>,2>& x);
- LUDecomp< std::complex<double> > LUconstruct_magma(Tensor_hao<std::complex<double>,2>&& x);
 
 
- /*******************/
- /*Inverse of matrix*/
- /*******************/
+ /**********************************************************************/
+ /*Inverse of matrix, use gpu interface, only one inverse_magma is okay.*/
+ /**********************************************************************/
 
  Tensor_hao<std::complex<double>,2> inverse_magma(const LUDecomp<std::complex<double>>& x);
- Tensor_hao<std::complex<double>,2> inverse_magma(LUDecomp<std::complex<double>>&& x);
 
 
  /*********************************************************/
@@ -60,7 +58,6 @@ namespace tensor_hao
  /*********************************************************/
 
  Tensor_hao<std::complex<double>,2> solve_lineq_magma(const LUDecomp<std::complex<double>>& x, const Tensor_core<std::complex<double>,2>& B, char TRANS='N');
- Tensor_hao<std::complex<double>,2> solve_lineq_magma(const LUDecomp<std::complex<double>>& x, Tensor_hao<std::complex<double>,2>&& B, char TRANS='N');
 
 
  /***********************************************************/

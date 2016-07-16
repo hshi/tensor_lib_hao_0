@@ -144,6 +144,83 @@ void eigen_magma_complex_double_test()
     else cout<<"WARNING!!!!!!!!! Eigen_magma failed complex double hermition test!"<<endl;
 }
 
+void LUconstruct_magma_test()
+{
+    Tensor_hao<complex<double>,2> X(3,3), A_exact(3,3);
+
+    X={ {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
+        {3.0,-2.0},   {2.0,0.0},    {5.123,3.11},
+        {2.123,-5.11},{5.123,-6.11},{3,0.0}   };
+
+    A_exact={ {3,4} ,       {0.75236,0.03351999999999994},  {0.12,-0.16},
+              {2,0},        {3.6182800000000004,3.04296},   {0.21807341113346007,-0.647707935025115},
+              {5.123,-6.11},{-1.05914748,4.42519664},       {-0.14942307391746978,-5.208155953378981} };
+
+    int flag=0;
+
+    LUDecomp<complex<double>> LU=LUconstruct_magma(X);
+    flag+=diff(LU.A,A_exact,1e-13);
+
+    if(flag==0) cout<<"PASSED! LUconstruct_magma passed complex double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! LUconstruct_magma failed complex double test!"<<endl;
+}
+
+void inverse_magma_test()
+{
+    Tensor_hao<complex<double>,2> A(3,3), INV_A, INV_A_exact(3,3);
+
+    A = { {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
+          {3.0,-2.0},   {2.0,0.0},    {5.123,3.11},
+          {2.123,-5.11},{5.123,-6.11},{3,0.0} };
+
+    INV_A_exact = { {-0.31516333912326305,0.13336022037456957} ,
+                    {0.16746685439563874,-0.0779491606298965},
+                    {-0.005504176768078849,0.1918486231848867},
+                    {0.1412286826747599,-0.11408929794801193},
+                    {-0.1402834127458906,0.038283792754219295},
+                    {0.061029436341995695,0.01438130659499342},
+                    {-0.01293596267860185,-0.1487405620815458},
+                    {0.17584867623524927,-0.010672609392757534},
+                    {-0.12306156095719788,-0.04540218264765162} };
+
+    int flag=0;
+
+    INV_A=inverse_magma( LUconstruct_magma(A) );
+    flag+=diff(INV_A,INV_A_exact,1e-13);
+
+    if(flag==0) cout<<"PASSED! Inverse_magma passed complex double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Inverse_magma failed complex double test!"<<endl;
+}
+
+void solve_lineq_magma_test()
+{
+    int flag=0;
+
+    Tensor_hao<complex<double>,2> A(3,3), B(3,2), X_exact(3,2), X;
+
+    A = { {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
+          {3.0,-2.0},   {2.0,0.0},    {5.123,3.11},
+          {2.123,-5.11},{5.123,-6.11},{3,0.0}  };
+
+    B = { {2.0,0.0} ,   {3.0,5.0},    {3.123,3.11},
+          {3.0,-6.0},   {2.0,1.0},    {6.123,3.11} };
+
+    X_exact = { {0.785989996146147, 0.12584834096778363} ,
+                {0.3050317378766687,-0.22890518276854455},
+                {-0.1429470443202702,0.20747587687923086},
+                {0.6345942167676883, 1.253141477086266},
+                {0.825768240961444,-0.8208234397212029},
+                {0.6299516251873555,0.037643960766659545} };
+
+    X=solve_lineq_magma( LUconstruct_magma(A), B );
+    flag+=diff(X,X_exact,1e-13);
+
+    if(flag==0) cout<<"PASSED! Solve_lineq_magma passed complex double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! Solve_lineq_magma failed complex double test!"<<endl;
+
+}
+
+
 void Tensor_2d_bl_magma_test()
 {
     int rank=0;
@@ -159,9 +236,9 @@ void Tensor_2d_bl_magma_test()
         gmm_magma_complex_double_test();
         eigen_magma_double_test();
         eigen_magma_complex_double_test();
-        //LUconstruct_magma_test();
-        //inverse_magma_test();
-        //solve_lineq_magma_test();
+        LUconstruct_magma_test();
+        inverse_magma_test();
+        solve_lineq_magma_test();
         //QRMatrix_magma_test();
         //SVDMatrix_magma_test();
         cout<<endl;

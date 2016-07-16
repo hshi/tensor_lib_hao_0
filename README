@@ -5,6 +5,10 @@ The c++ tensor library, it supports many dimension array and uses lapack blas li
 
 This project is licensed under the terms of the MIT license.
 
+* Delete overloads in magma
+* Test magma in 2d_common.h
+
+
 * Test lapacke/cblas, mkl, and acml
 * Change all size_t to int
 * Update tensor_all.h
