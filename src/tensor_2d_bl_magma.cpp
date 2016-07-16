@@ -163,6 +163,57 @@ namespace tensor_hao
      magma_free(d_A); magma_free(d_B); magma_free(d_C);
  }
 
+ /******************************/
+ /*Diagonalize symmetric Matrix*/
+ /******************************/
+ void eigen_magma(Tensor_core<double,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
+ {
+     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
+     if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
+
+     magma_vec_t jobz = magma_vec_const(JOBZ); magma_uplo_t uplo = magma_uplo_const(UPLO);
+     magma_int_t N=A.rank(0); magma_int_t info;
+
+     double work_test[1]; magma_int_t iwork_test[1];
+     magma_int_t lwork=-1; magma_int_t liwork=-1;
+     magma_dsyevd( jobz, uplo, N, A.data(), N, W.data(), work_test, lwork, iwork_test, liwork, &info );
+
+     lwork=lround(work_test[0]); liwork=iwork_test[0];
+     double* work; magma_int_t* iwork;
+     magma_dmalloc_cpu(&work, lwork); magma_imalloc_cpu(&iwork, liwork);
+     magma_dsyevd( jobz, uplo, N, A.data(), N, W.data(), work, lwork, iwork, liwork, &info );
+     magma_free_cpu(work); magma_free_cpu(iwork);
+
+     if(info!=0) {cout<<"Dsyevd failed: info= "<< info<<"\n"; exit(1);}
+ }
+
+ /******************************/
+ /*Diagonalize Hermition Matrix*/
+ /******************************/
+ void eigen_magma(Tensor_core<complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
+ {
+     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!\n"; exit(1);}
+     if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
+
+     magma_vec_t jobz = magma_vec_const(JOBZ); magma_uplo_t uplo = magma_uplo_const(UPLO);
+     magma_int_t N=A.rank(0); magma_int_t info;
+
+     magmaDoubleComplex work_test[1]; double rwork_test[1]; magma_int_t iwork_test[1];
+     magma_int_t lwork=-1; magma_int_t lrwork=-1; magma_int_t liwork=-1;
+     magma_zheevd( jobz, uplo, N, (magmaDoubleComplex* ) A.data(), N, W.data(),
+                   work_test, lwork, rwork_test, lrwork, iwork_test, liwork, &info );
+
+     lwork=lround( MAGMA_Z_REAL(work_test[0]) ); lrwork=lround(rwork_test[0]); liwork=iwork_test[0];
+     magmaDoubleComplex* work; double* rwork; magma_int_t* iwork;
+     magma_zmalloc_cpu(&work, lwork); magma_dmalloc_cpu(&rwork, lrwork); magma_imalloc_cpu(&iwork, liwork);
+     magma_zheevd( jobz, uplo, N, (magmaDoubleComplex* ) A.data(), N, W.data(),
+                   work, lwork, rwork, lrwork, iwork, liwork, &info );
+
+     magma_free_cpu(work); magma_free_cpu(rwork); magma_free_cpu(iwork);
+     if(info!=0) {cout<<"Zheevd failed: info= "<< info<<"\n"; exit(1);}
+ }
+
+
 } //end namespace tensor_hao
 
 #endif
