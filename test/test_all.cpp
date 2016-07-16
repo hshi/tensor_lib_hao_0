@@ -16,6 +16,9 @@ void Tensor_core_test();
 void Tensor_element_wise_test();
 void Tensor_2d_common_fun_test();
 void Tensor_2d_bl_cpu_test();
+#ifdef USE_MAGMA
+void Tensor_2d_bl_magma_test();
+#endif
 
 int main(int argc, char** argv)
 {
@@ -36,6 +39,9 @@ int main(int argc, char** argv)
     Tensor_element_wise_test();
     Tensor_2d_common_fun_test();
     Tensor_2d_bl_cpu_test();
+#ifdef USE_MAGMA
+    Tensor_2d_bl_magma_test();
+#endif
 
 #ifdef USE_MAGMA
     magma_finalize();
