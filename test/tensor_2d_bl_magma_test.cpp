@@ -220,6 +220,52 @@ void solve_lineq_magma_test()
 
 }
 
+void QRMatrix_magma_test()
+{
+    const int L0=3; const int L1=2;
+    Tensor_hao<complex<double>,2> A(L0,L1), B(L0,L1), A_exact(L0,L1);
+    Tensor_hao<double, 1> det_list(L1);
+
+    A = { {2.0,0.0} ,   {3.0,5.0},    {3.123,3.11},
+          {3.0,-6.0},   {2.0,1.0},    {6.123,3.11} };
+
+    B = A;
+
+    A_exact = { {0.26392384387316437, 0} ,
+                {0.3958857658097466 , 0.6598096096829109},
+                {0.41211708220794624, 0.41040157722277065},
+                {0.20568020122880237 , -0.7338652779407804},
+                {-0.41851770493832796, -0.22064009932009565},
+                {0.3071492824057953  ,0.3177382636670606} };
+
+    double det=QRMatrix_magma(A);
+
+    double det_list_M = QRMatrix_magma(B,det_list);
+
+    double det_exact=51.76794728400964;
+
+    int flag=0;
+    for(int j=0; j<L1; j++)
+    {
+        for(int i=0; i<L0; i++) {if(abs(abs(A(i,j))-abs(A_exact(i,j)))>1e-12) flag++;} //Use abs for unexpected sign
+    }
+
+    if(abs(det-det_exact)>1e-12) flag++;
+
+    for(int j=0; j<L1; j++)
+    {
+        for(int i=0; i<L0; i++) {if(abs(abs(B(i,j))-abs(A_exact(i,j)))>1e-12) flag++;} //Use abs for unexpected sign
+    }
+
+    if(abs(det-det_list_M)>1e-12) flag++;
+
+    det_list_M=1.0; for(int i=0; i<L1; i++) det_list_M*=det_list(i);
+    if(abs(det-det_list_M)>1e-12) flag++;
+
+    if(flag==0) cout<<"PASSED! QRMatrix_magma passed complex double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! QRMatrix_magma failed complex double test!"<<endl;
+}
+
 
 void Tensor_2d_bl_magma_test()
 {
@@ -239,7 +285,7 @@ void Tensor_2d_bl_magma_test()
         LUconstruct_magma_test();
         inverse_magma_test();
         solve_lineq_magma_test();
-        //QRMatrix_magma_test();
+        QRMatrix_magma_test();
         //SVDMatrix_magma_test();
         cout<<endl;
     }

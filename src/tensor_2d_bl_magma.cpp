@@ -317,6 +317,119 @@ namespace tensor_hao
      return M;
  }
 
+ /******************************/
+ /*QR decompostion of matrix ph*/
+ /******************************/
+//QR GPU interface does not give correct det(R) in large system size. 
+//Though it works well for small system size. Need to use the
+//CPU interface!
+
+ double QRMatrix_magma(Tensor_core<complex<double>,2>& ph)
+ {
+     //If we need to call magma two or more times, it's better 
+     //to use GPU interface, this will avoid transfer between
+     //CPU and GPU.
+     magma_int_t L=ph.rank(0); magma_int_t N=ph.rank(1); magma_int_t info;
+     int L_cpu = L; int N_cpu = N;
+
+     //Prepare for zgeqrf_gpu
+     magmaDoubleComplex_ptr d_A;
+     magma_int_t LDA = ((L+31)/32)*32;
+     magma_zmalloc(&d_A, LDA*N );
+     magma_zsetmatrix( L, N, (magmaDoubleComplex*) ph.data(), L, d_A, LDA );
+
+     magmaDoubleComplex* tau;  magma_zmalloc_cpu( &tau, N );
+
+     magmaDoubleComplex_ptr dT;
+     magma_int_t nb=magma_get_zgeqrf_nb(L);
+     magma_zmalloc( &dT, (2*N + ((N+31)/32)*32 )*nb );
+
+     //QR with zgeqrf_gpu
+     magma_zgeqrf_gpu(L,N,d_A,LDA,tau,dT,&info);
+     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+
+     //calculate det ==> Can change to only read diagoal value!!!
+     magma_zgetmatrix(L, N, d_A, LDA, (magmaDoubleComplex* ) ph.data(), L);
+     complex<double> det={1.0,0.0}; for (int i=0; i<N_cpu; i++)  det*=ph(i,i);
+     //zungqr_gpu get the correct form ph 
+     magma_zungqr_gpu(L,N,N,d_A,LDA,tau,dT,nb,&info);
+     if(info!=0) {cout<<"magma_zungqr_gpu run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     magma_zgetmatrix(L, N, d_A, LDA, (magmaDoubleComplex* ) ph.data(), L);
+
+     //Reshape the phi to get positive det
+     if(det.real()<0) {det=-det; for(int i=0; i<L_cpu; i++) ph(i,0)=-ph(i,0);}
+
+     magma_free(d_A); magma_free_cpu(tau); magma_free(dT);
+
+     return det.real();
+ }
+
+
+
+// double QRMatrix_magma(Tensor_core<complex<double>,2>& ph)
+// {
+//     magma_int_t L=ph.rank(0); magma_int_t N=ph.rank(1); magma_int_t info; 
+//     int L_cpu = L; int N_cpu = N;
+//
+//     magmaDoubleComplex* tau;  magma_zmalloc_cpu( &tau, N );
+//
+//     magmaDoubleComplex work_test[1]; magma_int_t lwork=-1;
+//     magma_zgeqrf(L, N, (magmaDoubleComplex *)ph.data(), L, tau, work_test, lwork, &info);
+//
+//     lwork=lround( MAGMA_Z_REAL(work_test[0]) );
+//     magmaDoubleComplex* work;  magma_zmalloc_cpu( &work, lwork );
+//     magma_zgeqrf(L, N, (magmaDoubleComplex *)ph.data(), L, tau, work, lwork, &info);
+//     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+//
+//     complex<double> det={1.0,0.0}; for (int i=0; i<N_cpu; i++)  det*=ph(i,i);
+//     magma_zungqr2(L, N, N, (magmaDoubleComplex *)ph.data(), L, tau, &info );
+//     if(info!=0) {cout<<"magma_zungqr2 run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+//
+//     //Reshape the phi to get positive det
+//     if(det.real()<0) {det=-det; for(int i=0; i<L_cpu; i++) ph(i,0)=-ph(i,0);}
+//
+//     magma_free_cpu(tau); magma_free_cpu(work);
+//
+//     return det.real();
+// }
+
+
+ double QRMatrix_magma(Tensor_core<complex<double>,2>& ph, Tensor_core<double,1>& det_list)
+ {
+     if( det_list.rank(0) != ph.rank(1) ) {cout<<"det_list size is not consistent with ph! "<<endl; exit(1); }
+
+     magma_int_t L=ph.rank(0); magma_int_t N=ph.rank(1); magma_int_t info; 
+     int L_cpu = L; int N_cpu = N;
+
+     magmaDoubleComplex* tau;  magma_zmalloc_cpu( &tau, N );
+
+     magmaDoubleComplex work_test[1]; magma_int_t lwork=-1;
+     magma_zgeqrf(L, N, (magmaDoubleComplex *)ph.data(), L, tau, work_test, lwork, &info);
+
+     lwork=lround( MAGMA_Z_REAL(work_test[0]) );
+     magmaDoubleComplex* work;  magma_zmalloc_cpu( &work, lwork );
+     magma_zgeqrf(L, N, (magmaDoubleComplex *)ph.data(), L, tau, work, lwork, &info);
+     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+
+     complex<double> det={1.0,0.0};
+     for (int i=0; i<N_cpu; i++)  {det_list(i)=ph(i,i).real(); det*=ph(i,i);}
+     magma_zungqr2(L, N, N, (magmaDoubleComplex *)ph.data(), L, tau, &info );
+     if(info!=0) {cout<<"magma_zungqr2 run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+
+     //Reshape the phi to get positive det
+     if(det.real()<0)
+     {
+        det=-det;
+        det_list(0)=-det_list(0);
+        for(int i=0; i<L_cpu; i++) ph(i,0)=-ph(i,0);
+     }
+
+     magma_free_cpu(tau); magma_free_cpu(work);
+
+     return det.real();
+ }
+
+
 } //end namespace tensor_hao
 
 #endif
