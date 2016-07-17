@@ -26,7 +26,7 @@ int main(int argc, char** argv)
     if(rank==0)
     {
         cout<<"\n\nThis timing program compares time cost between CPU blas lapack and MAGMA blas lapack."<<endl;
-        cout<<"The flag represents difference between results from CPU and these from MAGMA."<<endl;
+        cout<<"The flag represents number of difference elements between results from CPU and these from MAGMA."<<endl;
         cout<<"It requires large memory and long computational time if -DUSE_MKL, else does nothing."<<endl;
         cout<<"Please submit the job if you are using a cluster, it takes ~10 minutes."<<endl;
         cout<<"\n=======Start timing======="<<endl;

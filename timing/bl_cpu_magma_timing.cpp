@@ -25,7 +25,7 @@ void gmm_float_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(c_cpu,c_magma,1e-5);
+    size_t flag=diff(c_cpu,c_magma,1e-4);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -84,7 +84,7 @@ void gmm_complexfloat_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(c_cpu,c_magma,1e-5);
+    size_t flag=diff(c_cpu,c_magma,1e-4);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -136,7 +136,7 @@ void eigen_double_timing(int N)
 
     //Get a real symmetry a_cpu and a_magma
     fill_random(a_cpu);
-    for (int i=0; i<N; i++)  {for (int j=i+1; j<N; j++) a_cpu(i,j)=a_cpu(j,i);}
+    for (int j=0; j<N; j++) {for (int i=j+1; i<N; i++) a_cpu(i,j)=a_cpu(j,i);}
     a_magma=a_cpu;
 
     cpu_time = magma_wtime();
@@ -169,10 +169,10 @@ void eigen_complexdouble_timing(int N)
 
     //Get a Hermition matrix a_cpu and a_magma
     fill_random(a_cpu); 
-    for (int i=0; i<N; i++)
+    for (int j=0; j<N; j++)
     {
-        a_cpu(i,i)=a_cpu(i,i).real();
-        for (int j=i+1; j<N; j++) a_cpu(i,j)=conj(a_cpu(j,i));
+        a_cpu(j,j)=a_cpu(j,j).real();
+        for (int i=j+1; i<N; i++) a_cpu(i,j)=conj(a_cpu(j,i));
     }
     a_magma=a_cpu;
     check_Hermitian(a_cpu); 
@@ -187,7 +187,6 @@ void eigen_complexdouble_timing(int N)
 
     size_t flag=diff(w_cpu,w_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
-    //if(N==810) cout<<w_cpu-w_magma<<endl;
 }
 
 void eigen_complexdouble_timing_loop()
@@ -305,11 +304,11 @@ void QRMatrix_timing(int N, int M)
     magma_time = magma_wtime() - magma_time;
 
     size_t flag=0; 
-    for(int i=0; i<N; i++)
+    for(int j=0; j<M; j++)
     {
-        for(int j=0; j<M; j++) {if(abs(abs(ph_cpu(i,j))-abs(ph_magma(i,j)))>1e-12) flag++;}
+        for(int i=0; i<N; i++) {if(abs(abs(ph_cpu(i,j))-abs(ph_magma(i,j)))>1e-10) flag++;}
     }
-    if(abs((det_cpu-det_magma)/det_magma)>1e-10) {/*flag++;*/}
+    if(abs((det_cpu-det_magma)/det_magma)>1e-10) {flag++;}
 
     //In large system, the cpu part will have infinite, magma will have finite value:
     //It might be a bug from magma, here we are using magma_zgeqrf_gpu and magma_zungqr_gpu
@@ -323,6 +322,7 @@ void QRMatrix_timing(int N, int M)
     cout<<setw(16)<<N<<setw(16)<<M<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
+
 void QRMatrix_timing_loop()
 {
     cout<<"Timing QRMatrix complex double:"<<endl;
@@ -332,6 +332,40 @@ void QRMatrix_timing_loop()
     cout<<"\n\n\n"<<endl;
 }
 
+void SVDMatrix_timing(int N)
+{
+    real_Double_t cpu_time, magma_time;
+    Tensor_hao<complex<double>,2> U_cpu(N,N), U_magma(N,N);
+    Tensor_hao<complex<double>,2> V_cpu(N,N), V_magma(N,N);
+    Tensor_hao<double,1> D_cpu(N), D_magma(N);
+    fill_random(U_cpu); U_magma=U_cpu;
+
+    cpu_time = magma_wtime();
+    SVDMatrix_cpu(U_cpu, D_cpu, V_cpu);
+    cpu_time = magma_wtime() - cpu_time;
+
+    magma_time = magma_wtime();
+    SVDMatrix_magma(U_magma, D_magma, V_magma);
+    magma_time = magma_wtime() - magma_time;
+
+    int flag=0;
+    for(int j=0; j<N; j++)
+    {
+        for(int i=0; i<N; i++) {if(abs(abs(U_cpu(i,j))-abs(U_magma(i,j)))>1e-10) flag++;}
+    }
+    flag += diff(D_cpu, D_magma, 1e-10);
+
+    cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
+}
+
+void SVDMatrix_timing_loop()
+{
+    cout<<"Timing SVDMatrix complex double:"<<endl;
+    cout<<setw(16)<<"N"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
+    for (int i = 8; i <= 1087; i *= 2)        SVDMatrix_timing(i);
+    for (int i = 1088; i <= i_max; i += 1024)  SVDMatrix_timing(i);
+    cout<<"\n\n\n"<<endl;
+}
 
 
 void bl_cpu_magma_timing()
@@ -346,6 +380,7 @@ void bl_cpu_magma_timing()
    inverse_timing_loop();
    solve_lineq_timing_loop();
    QRMatrix_timing_loop();
+   SVDMatrix_timing_loop();
 }
 
 
