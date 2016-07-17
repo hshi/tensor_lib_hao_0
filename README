@@ -6,6 +6,9 @@ The c++ tensor library, it supports many dimension array and uses lapack blas li
 This project is licensed under the terms of the MIT license.
 
 
+* Check the real time
+* Change all thing in header to same namespace
+* Add timing for SVD 
 * Delete overloads in magma
 * Test magma results with cpu results, important!!!
 * Test magma in 2d_common.h
