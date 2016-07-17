@@ -83,6 +83,8 @@ void F77NAME(zgesdd)( const char* jobz, const int* m, const int* n,
              const int* ldu, BLAS_LAPACK_Complex16* vt, const int* ldvt,
              BLAS_LAPACK_Complex16* work, const int* lwork, double* rwork,
              int* iwork, int* info );
+void F77NAME(zlarnv)( const int* idist, int* iseed, const int* n,
+             BLAS_LAPACK_Complex16* x );
 
 #ifdef __cplusplus
 }
