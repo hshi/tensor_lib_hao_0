@@ -19,6 +19,10 @@ void Tensor_2d_bl_cpu_test();
 #ifdef USE_MAGMA
 void Tensor_2d_bl_magma_test();
 #endif
+#ifdef MPI_HAO
+void Tensor_mpi_test();
+#endif
+
 
 int main(int argc, char** argv)
 {
@@ -42,6 +46,10 @@ int main(int argc, char** argv)
 #ifdef USE_MAGMA
     Tensor_2d_bl_magma_test();
 #endif
+#ifdef MPI_HAO
+    Tensor_mpi_test();
+#endif
+
 
 #ifdef USE_MAGMA
     magma_finalize();

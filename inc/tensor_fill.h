@@ -1,5 +1,5 @@
-#ifndef FILL_TENSOR_H
-#define FILL_TENSOR_H
+#ifndef TENSOR_FILL_H
+#define TENSOR_FILL_H
 
 #include "tensor_core.h"
 #include "blas_lapack_wrap.h"

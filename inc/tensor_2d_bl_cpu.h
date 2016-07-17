@@ -1,5 +1,5 @@
-#ifndef TENSOR_BL_CPU_H
-#define TENSOR_BL_CPU_H
+#ifndef TENSOR_2D_BL_CPU_H
+#define TENSOR_2D_BL_CPU_H
 
 #include <vector>
 #include "tensor_core.h"

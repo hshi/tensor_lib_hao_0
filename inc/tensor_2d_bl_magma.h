@@ -1,5 +1,5 @@
-#ifndef TENSOR_BL_MAGMA_H
-#define TENSOR_BL_MAGMA_H
+#ifndef TENSOR_2D_BL_MAGMA_H
+#define TENSOR_2D_BL_MAGMA_H
 
 #ifdef USE_MAGMA
 

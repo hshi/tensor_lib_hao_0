@@ -3,7 +3,7 @@
 #include "tensor_2d_bl_cpu.h"
 #include "tensor_2d_bl_magma.h"
 #include "blas_lapack_wrap.h"
-#include "fill_tensor.h"
+#include "tensor_fill.h"
 
 using namespace std;
 using namespace tensor_hao;
