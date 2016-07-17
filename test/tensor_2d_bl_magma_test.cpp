@@ -5,7 +5,7 @@
 #endif
 #include <cmath>
 #include "tensor_2d_bl_magma.h"
-#include "blas_lapack_wrap.h"
+#include "fill_tensor.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -267,15 +267,17 @@ void QRMatrix_magma_test()
     else cout<<"WARNING!!!!!!!!! QRMatrix_magma failed complex double test!"<<endl;
 }
 
-void QRMatrix_magma_gpu_cpu_compare_test()
+//*******************************************************************
+//Test the difference between QR use CPU interface and GPU interface
+//*******************************************************************
+/*
+void QRMatrix_magma_gpu_magma_compare_test()
 {
     const int L0=100; const int L1=100;
     Tensor_hao<complex<double>,2> A(L0,L1), B(L0,L1);
     Tensor_hao<double, 1> det_list(L1);
 
-    int lapack_ran_ISEED[4] = { 0, 127, 0, 127 };
-    int itwo = 2; int size_A = L0*L1;
-    F77NAME(zlarnv)(&itwo, lapack_ran_ISEED, &size_A, A.data());
+    fill_random(A);
 
     B = A;
 
@@ -286,6 +288,37 @@ void QRMatrix_magma_gpu_cpu_compare_test()
     cout<<det<<endl;
     cout<<det_list_M<<endl;
 }
+*/
+
+void SVDMatrix_magma_test()
+{
+    const int L=3;
+    Tensor_hao<complex<double>,2> U_before(L,L), U(L,L), V(L,L);
+    Tensor_hao<double,1> D(L), D_exact(L);
+
+    U_before = { {1.0,2.0}, {2.0,1.0}, {3.0,5.0},
+                 {2.0,0.5}, {2.0,0.0}, {1.0,2.0},
+                 {1.0,7.0}, {8.2,1.0}, {3.3,5.0} };
+
+    D_exact = {14.003853260054132, 3.686182682653158, 1.2977484736955485};
+
+    U=U_before;
+
+    SVDMatrix_magma(U, D, V);
+
+    Tensor_hao<complex<double>,1> D_cd(L);
+    Tensor_hao<complex<double>,2> U_back(L,L);
+    for(int i=0; i<L; i++) D_cd(i)=D(i);
+
+    gmm_magma(U, D_Multi_Matrix(D_cd, V), U_back);
+
+    int flag=0;
+    flag+=diff(D,D_exact,1e-13);
+    flag+=diff(U_before,U_back,1e-13);
+    if(flag==0) cout<<"PASSED! SVDMatrix_magma passed complex double test!"<<endl;
+    else cout<<"WARNING!!!!!!!!! SVDMatrix_magma failed complex double test!"<<endl;
+}
+
 
 void Tensor_2d_bl_magma_test()
 {
@@ -306,7 +339,7 @@ void Tensor_2d_bl_magma_test()
         inverse_magma_test();
         solve_lineq_magma_test();
         QRMatrix_magma_test();
-        QRMatrix_magma_gpu_cpu_compare_test();
+        //QRMatrix_magma_gpu_magma_compare_test();
         //SVDMatrix_magma_test();
         cout<<endl;
     }

@@ -430,6 +430,42 @@ namespace tensor_hao
      return det.real();
  }
 
+ /********************************************/
+ /*SVD a matrix U = U D V, return U, D, and V*/
+ /********************************************/
+ void SVDMatrix_magma(Tensor_core<complex<double>,2>& U, Tensor_core<double,1>& D, Tensor_core<complex<double>,2>& V)
+ {
+     if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
+     {
+         cout<<"Size is not consistent in SVDMatrix_magma! Only support square matrix."<<endl;
+         exit(1);
+     }
+
+     magma_int_t m=U.rank(0); magma_int_t n=V.rank(0);
+     magma_vec_t jobz(MagmaOverwriteVec); magma_int_t lda=m;
+     magmaDoubleComplex* u=nullptr; magma_int_t ldu=1; magma_int_t ldv=n;
+     magmaDoubleComplex work_test[1]; magma_int_t lwork=-1;
+
+     double* rwork; magma_int_t* iwork;
+     magma_dmalloc_cpu( &rwork, 5*m*m+7*m ); magma_imalloc_cpu(&iwork, 8*m); 
+     magma_int_t info;
+
+     magma_zgesdd(jobz, m, n, (magmaDoubleComplex *) U.data(), lda, D.data(), u, ldu, (magmaDoubleComplex *) V.data(), ldv, 
+                  work_test, lwork, rwork, iwork, &info);
+
+     lwork=lround( MAGMA_Z_REAL(work_test[0]) );
+     magmaDoubleComplex* work; magma_zmalloc_cpu(&work, lwork);
+
+     magma_zgesdd(jobz, m, n, (magmaDoubleComplex *) U.data(), lda, D.data(), u, ldu, (magmaDoubleComplex *) V.data(), ldv, 
+                  work,      lwork, rwork, iwork, &info);
+
+     magma_free_cpu(work); magma_free_cpu(rwork); magma_free_cpu(iwork);
+     if(info!=0)
+     {
+         cout<<"SVDMatrix_magma is not suceesful, info= "<<info<<endl;
+         exit(1);
+     }
+ }
 
 } //end namespace tensor_hao
 
