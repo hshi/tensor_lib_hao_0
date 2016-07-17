@@ -83,7 +83,7 @@ namespace tensor_hao
      vector<double> work(lwork); vector<int> iwork(liwork);
      F77NAME(dsyevd)(&JOBZ, &UPLO, &N, A.data(), &N, W.data(), work.data(), &lwork, iwork.data(), &liwork ,&info);
 
-     if(info!=0) {cout<<"Dsyevd failed: info= "<< info<<"\n"; exit(1);}
+     if(info!=0) {cout<<"Dsyevd failed: info= "<< info<<endl; exit(1);}
  }
 
 
@@ -92,7 +92,7 @@ namespace tensor_hao
  /******************************/
  void eigen_cpu(Tensor_core<complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
  {
-     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!\n"; exit(1);}
+     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
      int N=A.rank(0); int info;
 
@@ -104,7 +104,7 @@ namespace tensor_hao
      vector<complex<double>> work(lwork); vector<double> rwork(lrwork); vector<int> iwork(liwork);
      F77NAME(zheevd)(&JOBZ, &UPLO, &N, A.data(), &N, W.data(), work.data(), &lwork, rwork.data(), &lrwork, iwork.data(), &liwork ,&info);
 
-     if(info!=0) {cout<<"Zheevd failed: info= "<< info<<"\n"; exit(1);}
+     if(info!=0) {cout<<"Zheevd failed: info= "<< info<<endl; exit(1);}
  }
 
  /******************************************/
@@ -112,23 +112,23 @@ namespace tensor_hao
  /******************************************/
  LUDecomp<complex<double>> LUconstruct_cpu(const Tensor_core<complex<double>,2>& x)
  {
-     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!\n"; exit(1);}
+     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
      int N=x.rank(0);
      LUDecomp<complex<double>> y; y.A=x; y.ipiv=Tensor_hao<int,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
-     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!\n"; exit(1);}
+     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
      return y;
  }
 
  LUDecomp<complex<double>> LUconstruct_cpu(Tensor_hao<complex<double>,2>&& x)
  {
-     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!\n"; exit(1);}
+     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
      int N=x.rank(0);
      LUDecomp<complex<double>> y; y.A= move(x); y.ipiv=Tensor_hao<int,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
-     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!\n"; exit(1);}
+     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
      return y;
  }
 
@@ -147,7 +147,7 @@ namespace tensor_hao
      lwork=lround(work_test[0].real());
      vector<complex<double>> work(lwork);
      F77NAME(zgetri)(&N, A.data(), &N, ipiv.data(), work.data(), &lwork, &info);
-     if(info<0) {cout<<"The "<<info<<"-th parameter is illegal in inverse_cpu_utilities!\n"; exit(1);}
+     if(info<0) {cout<<"The "<<info<<"-th parameter is illegal in inverse_cpu_utilities!"<<endl; exit(1);}
  }
 
  Tensor_hao<complex<double>,2> inverse_cpu(const LUDecomp<complex<double>>& x)
@@ -169,12 +169,12 @@ namespace tensor_hao
  /*********************************************************/
  void solve_lineq_cpu_utilities(const LUDecomp<complex<double>>& x, Tensor_hao<complex<double>,2>& M, char TRANS)
  {
-     if( x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!\n"; exit(1);}
+     if( x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
      int N=M.rank(0); int NRHS=M.rank(1); int info;
      F77NAME(zgetrs)(&TRANS, &N, &NRHS, x.A.data(), &N, x.ipiv.data(), M.data(), &N, &info);
      if(info!=0)
      {
-         cout<<"Solve linear equation is not suceesful: "<<info<<"-th parameter is illegal! \n";
+         cout<<"Solve linear equation is not suceesful: "<<info<<"-th parameter is illegal!"<<endl;
          exit(1);
      }
  }
@@ -207,12 +207,12 @@ namespace tensor_hao
      lwork=lround(work_test[0].real());
      vector<complex<double>> work(lwork);
      F77NAME(zgeqrf) (&L, &N, ph.data(), &L, tau.data(), work.data(), &lwork, &info);
-     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      complex<double> det={1.0,0.0}; for (int i=0; i<N; i++)  det*=ph(i,i);
 
      F77NAME(zungqr) (&L, &N, &N, ph.data(), &L, tau.data(), work.data(), &lwork, &info);
-     if(info!=0) {cout<<"Zungqr run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"Zungqr run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      if(det.real()<0) {det=-det; for(int i=0; i<L; i++) ph(i,0)=-ph(i,0);}
 
@@ -232,13 +232,13 @@ namespace tensor_hao
      lwork=lround(work_test[0].real());
      vector<complex<double>> work(lwork);
      F77NAME(zgeqrf) (&L, &N, ph.data(), &L, tau.data(), work.data(), &lwork, &info);
-     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      complex<double> det={1.0,0.0}; 
      for (int i=0; i<N; i++)  {det_list(i)=ph(i,i).real(); det*=ph(i,i);}
 
      F77NAME(zungqr) (&L, &N, &N, ph.data(), &L, tau.data(), work.data(), &lwork, &info);
-     if(info!=0) {cout<<"Zungqr run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"Zungqr run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      if(det.real()<0)
      {

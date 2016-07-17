@@ -221,7 +221,7 @@ namespace tensor_hao
          int args_size = args.size();
          if(L != args_size)
          {
-             std::cout<<"Something is wrong with input args_size, not consisten with L! \n";
+             std::cout<<"Something is wrong with input args_size, not consisten with L!"<<std::endl;
              std::cout<<L<<" "<<args_size<<std::endl;
              exit(1);
          }

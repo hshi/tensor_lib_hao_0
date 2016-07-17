@@ -184,7 +184,7 @@ namespace tensor_hao
      magma_dsyevd( jobz, uplo, N, A.data(), N, W.data(), work, lwork, iwork, liwork, &info );
      magma_free_cpu(work); magma_free_cpu(iwork);
 
-     if(info!=0) {cout<<"Dsyevd failed: info= "<< info<<"\n"; exit(1);}
+     if(info!=0) {cout<<"Dsyevd failed: info= "<< info<<endl; exit(1);}
  }
 
  /******************************/
@@ -192,7 +192,7 @@ namespace tensor_hao
  /******************************/
  void eigen_magma(Tensor_core<complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
  {
-     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!\n"; exit(1);}
+     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
 
      magma_vec_t jobz = magma_vec_const(JOBZ); magma_uplo_t uplo = magma_uplo_const(UPLO);
@@ -210,7 +210,7 @@ namespace tensor_hao
                    work, lwork, rwork, lrwork, iwork, liwork, &info );
 
      magma_free_cpu(work); magma_free_cpu(rwork); magma_free_cpu(iwork);
-     if(info!=0) {cout<<"Zheevd failed: info= "<< info<<"\n"; exit(1);}
+     if(info!=0) {cout<<"Zheevd failed: info= "<< info<<endl; exit(1);}
  }
 
  /******************************************/
@@ -219,7 +219,7 @@ namespace tensor_hao
 
  LUDecomp<complex<double>> LUconstruct_magma(const Tensor_core<complex<double>,2>& x)
  {
-     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!\n"; exit(1);}
+     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
 
      //Create LU object
      LUDecomp<complex<double>> y;
@@ -282,7 +282,7 @@ namespace tensor_hao
  /*********************************************************/
  Tensor_hao<complex<double>,2> solve_lineq_magma(const LUDecomp<complex<double>>& x, const Tensor_core<complex<double>,2>& B, char TRANS)
  {
-     if( x.A.rank(0) != B.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!\n"; exit(1);}
+     if( x.A.rank(0) != B.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
      magma_int_t N=B.rank(0); magma_int_t NRHS=B.rank(1); magma_int_t info;
 
      magma_trans_t Trans = magma_trans_const(TRANS);
@@ -303,7 +303,7 @@ namespace tensor_hao
      magma_zgetrs_gpu( Trans, N, NRHS, d_A, lda, (magma_int_t*)x.ipiv.data(), d_B, ldb, &info );
      if(info!=0)
      {
-         cout<<"Solve linear equation is not suceesful: "<<info<<"-th parameter is illegal! \n";
+         cout<<"Solve linear equation is not suceesful: "<<info<<"-th parameter is illegal!"<<endl;
          exit(1);
      }
 
@@ -349,14 +349,14 @@ namespace tensor_hao
 
      //QR with zgeqrf_gpu
      magma_zgeqrf_gpu(L,N,d_A,LDA,tau,dT,&info);
-     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      //calculate det ==> Can change to only read diagoal value!!!
      magma_zgetmatrix(L, N, d_A, LDA, (magmaDoubleComplex* ) ph.data(), L);
      complex<double> det={1.0,0.0}; for (int i=0; i<N_cpu; i++)  det*=ph(i,i);
      //zungqr_gpu get the correct form ph 
      magma_zungqr_gpu(L,N,N,d_A,LDA,tau,dT,nb,&info);
-     if(info!=0) {cout<<"magma_zungqr_gpu run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"magma_zungqr_gpu run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
      magma_zgetmatrix(L, N, d_A, LDA, (magmaDoubleComplex* ) ph.data(), L);
 
      //Reshape the phi to get positive det
@@ -382,11 +382,11 @@ namespace tensor_hao
      lwork=lround( MAGMA_Z_REAL(work_test[0]) );
      magmaDoubleComplex* work;  magma_zmalloc_cpu( &work, lwork );
      magma_zgeqrf(L, N, (magmaDoubleComplex *)ph.data(), L, tau, work, lwork, &info);
-     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      complex<double> det={1.0,0.0}; for (int i=0; i<N_cpu; i++)  det*=ph(i,i);
      magma_zungqr2(L, N, N, (magmaDoubleComplex *)ph.data(), L, tau, &info );
-     if(info!=0) {cout<<"magma_zungqr2 run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"magma_zungqr2 run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      //Reshape the phi to get positive det
      if(det.real()<0) {det=-det; for(int i=0; i<L_cpu; i++) ph(i,0)=-ph(i,0);}
@@ -399,7 +399,7 @@ namespace tensor_hao
 
  double QRMatrix_magma(Tensor_core<complex<double>,2>& ph, Tensor_core<double,1>& det_list)
  {
-     if( det_list.rank(0) != ph.rank(1) ) {cout<<"det_list size is not consistent with ph! "<<endl; exit(1); }
+     if( det_list.rank(0) != ph.rank(1) ) {cout<<"det_list size is not consistent with ph!"<<endl; exit(1); }
 
      magma_int_t L=ph.rank(0); magma_int_t N=ph.rank(1); magma_int_t info; 
      int L_cpu = L; int N_cpu = N;
@@ -412,12 +412,12 @@ namespace tensor_hao
      lwork=lround( MAGMA_Z_REAL(work_test[0]) );
      magmaDoubleComplex* work;  magma_zmalloc_cpu( &work, lwork );
      magma_zgeqrf(L, N, (magmaDoubleComplex *)ph.data(), L, tau, work, lwork, &info);
-     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      complex<double> det={1.0,0.0};
      for (int i=0; i<N_cpu; i++)  {det_list(i)=ph(i,i).real(); det*=ph(i,i);}
      magma_zungqr2(L, N, N, (magmaDoubleComplex *)ph.data(), L, tau, &info );
-     if(info!=0) {cout<<"magma_zungqr2 run is not suceesful: "<<info<<"-th parameter is illegal! \n"; exit(1);}
+     if(info!=0) {cout<<"magma_zungqr2 run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      //Reshape the phi to get positive det
      if(det.real()<0)

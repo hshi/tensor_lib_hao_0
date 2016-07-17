@@ -10,7 +10,7 @@ namespace tensor_hao
  int check_Hermitian(const Tensor_core<complex<double>,2>& A)
  {
      int L0=A.rank(0); int L1=A.rank(1);
-     if( L0!=L1 ) {cout<<"Input for Hermitian is not square matrix! \n"; exit(1);}
+     if( L0!=L1 ) {cout<<"Input for Hermitian is not square matrix!"<<endl; exit(1);}
      double error=0; double norm=0;
      for(int j=0; j<L1; j++)
      {
@@ -57,7 +57,7 @@ namespace tensor_hao
  {
      if(x.info>0)
      {
-         cout<<"WARNING!!!! lognorm_phase_determinant function has zero determinant!\n";
+         cout<<"WARNING!!!! lognorm_phase_determinant function has zero determinant!"<<endl;
          lognorm=complex<double>(-1e300,0.0);
          phase=complex<double>(1.0,0.0);
          return;
@@ -91,7 +91,7 @@ namespace tensor_hao
  /*******************************/
  Tensor_hao<complex<double>,2> D_Multi_Matrix(const Tensor_core<complex<double>,1>& D,const Tensor_core<complex<double>,2>& ph)
  {
-     if( D.rank(0) != ph.rank(0) ) {cout<<"D_Multi_Matrix input error: D.rank(0)!=ph.rank(0)! \n"; exit(1);}
+     if( D.rank(0) != ph.rank(0) ) {cout<<"D_Multi_Matrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
 
      int L0 = ph.rank(0); int L1 = ph.rank(1);
      Tensor_hao<complex<double>,2> ph_new(L0, L1);
@@ -111,7 +111,7 @@ namespace tensor_hao
  int check_skew_symmetric(const Tensor_core<complex<double>,2>& A)
  {
      int L0=A.rank(0); int L1=A.rank(1);
-     if( L0!=L1 ) {cout<<"Input for check_skew_symmetric is not square matrix! \n"; exit(1);}
+     if( L0!=L1 ) {cout<<"Input for check_skew_symmetric is not square matrix!"<<endl; exit(1);}
 
      double error=0; double norm=0;
      for(int j=0; j<L1; j++)
@@ -142,7 +142,7 @@ namespace tensor_hao
  complex<double> Pfaffian(Tensor_core<complex<double>,2>& A)
  {
     int L0 = A.rank(0); int L1 = A.rank(1);
-    if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.rank(1)! \n"; exit(1);}
+    if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.rank(1)!"<<endl; exit(1);}
     return pfaffian_aitken(A.data(), L0, L1);
  }
 

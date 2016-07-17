@@ -5,11 +5,20 @@ The c++ tensor library, it supports many dimension array and uses lapack blas li
 
 This project is licensed under the terms of the MIT license.
 
-* Which SVD is faster?
 * Check MAGMA website about QRMatrix GPU interface: http://icl.cs.utk.edu/magma/forum/viewforum.php?f=2
+  From timeing information, looks like CPU interface is already good enough.
 
-* Change all size_t to int
-* Update tensor_all.h
-* Check input about Tensor_core, output about Tensor_hao
-* Check about continuous memory for all code!!! (other libraries)
-* Check test <<endl; vs. "\n"
+Timing QRMatrix complex double:
+               N               M        cpu_time      magma_time            flag
+               8               8     5.81741e-05     0.000154972               0
+              16              16     3.69549e-05     7.60555e-05               0
+              32              32     0.000150204     0.000244856               0
+              64              64      0.00631189      0.00143313               0
+             128             128      0.00471091      0.00304317               0
+             256             256        0.031348      0.00936007               0
+             512             512        0.218814       0.0344279               0
+            1024            1024          1.6261        0.151227               0
+            1088            1088         1.94658        0.173743               0
+            2112            2112         13.4996         0.83073               0
+            3136            3136         43.4533         2.22725               0
+

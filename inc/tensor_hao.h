@@ -115,7 +115,7 @@ namespace tensor_hao
      {
          if( i > ( this->n[D-1] ) || i<0 )
          {
-             std::cout<<"Slice i not consistent with n[D-1] !!\n";
+             std::cout<<"Slice i not consistent with n[D-1] !!"<<std::endl;
              std::cout<<i<<" "<<this->n[D-1]<<std::endl;
              exit(1);
          }

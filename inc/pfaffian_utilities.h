@@ -4,6 +4,9 @@
 #include <iostream>
 #include <complex>
 
+//NOTE: When we loop for T* A, we need to make sure it is continous memory
+//Current code might be slower!
+
 namespace tensor_hao
 {
  //Goal:  Exchange rows i1 i2 and columns i1 i2 of a skew symmetric matrix A
