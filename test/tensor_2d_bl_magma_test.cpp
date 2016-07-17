@@ -5,7 +5,6 @@
 #endif
 #include <cmath>
 #include "tensor_2d_bl_magma.h"
-#include "fill_tensor.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -267,29 +266,6 @@ void QRMatrix_magma_test()
     else cout<<"WARNING!!!!!!!!! QRMatrix_magma failed complex double test!"<<endl;
 }
 
-//*******************************************************************
-//Test the difference between QR use CPU interface and GPU interface
-//*******************************************************************
-/*
-void QRMatrix_magma_gpu_magma_compare_test()
-{
-    const int L0=100; const int L1=100;
-    Tensor_hao<complex<double>,2> A(L0,L1), B(L0,L1);
-    Tensor_hao<double, 1> det_list(L1);
-
-    fill_random(A);
-
-    B = A;
-
-    double det=QRMatrix_magma(A);
-
-    double det_list_M = QRMatrix_magma(B,det_list);
-
-    cout<<det<<endl;
-    cout<<det_list_M<<endl;
-}
-*/
-
 void SVDMatrix_magma_test()
 {
     const int L=3;
@@ -339,8 +315,7 @@ void Tensor_2d_bl_magma_test()
         inverse_magma_test();
         solve_lineq_magma_test();
         QRMatrix_magma_test();
-        //QRMatrix_magma_gpu_magma_compare_test();
-        //SVDMatrix_magma_test();
+        SVDMatrix_magma_test();
         cout<<endl;
     }
 }

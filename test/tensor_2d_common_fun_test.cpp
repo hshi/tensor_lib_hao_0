@@ -4,6 +4,7 @@
 #include <cmath>
 #include "tensor_2d_common_fun.h"
 #include "tensor_2d_bl_cpu.h"
+#include "tensor_2d_bl_magma.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -82,6 +83,12 @@ void determinant_test()
     complex<double> det_exact={123.11968700000003,3.3324580000000115};
     if(abs(det-det_exact)<1e-12) cout<<"PASSED! Determinant passed complex double test in cpu!"<<endl;
     else cout<<"WARNING!!!!!!!!! Determinant failed complex double test in cpu!"<<endl;
+#ifdef USE_MAGMA
+     det=determinant( LUconstruct_magma(X) );
+     if(abs(det-det_exact)<1e-12) cout<<"PASSED! Determinant passed complex double test in magma!"<<endl;
+     else cout<<"WARNING!!!!!!!!! Determinant failed complex double test in magma!"<<endl;
+#endif
+
 }
 
 
@@ -98,6 +105,12 @@ void lognorm_phase_determinant_test()
     int flag=0;
     if(abs(lognorm-lognorm_exact)>1e-12) flag++;
     if(abs(phase-phase_exact)>1e-12) flag++;
+#ifdef USE_MAGMA
+    lognorm_phase_determinant( LUconstruct_magma(X), lognorm, phase );
+    if(abs(lognorm-lognorm_exact)>1e-12) flag++;
+    if(abs(phase-phase_exact)>1e-12) flag++;
+#endif
+
     if(flag==0) cout<<"PASSED! Lognorm_phase_determinant passed complex double test in cpu!"<<endl;
     else cout<<"WARNING!!!!!!!!! Lognorm_phase_determinant failed complex double test in cpu!"<<endl;
 }
@@ -116,6 +129,11 @@ void log_determinant_test()
     complex<double> logdet_exact={716.3123168546207,0.027060209772387683};
     if(abs(logdet-logdet_exact)<1e-12) cout<<"PASSED! Log_determinant passed complex double test in cpu!"<<endl;
     else cout<<"WARNING!!!!!!!!! Log_determinant failed complex double test in cpu!"<<endl;
+#ifdef USE_MAGMA
+     logdet=log_determinant( LUconstruct_magma(X) );
+     if(abs(logdet-logdet_exact)<1e-12) cout<<"PASSED! Log_determinant passed complex double test in magma!"<<endl;
+     else cout<<"WARNING!!!!!!!!! Log_determinant failed complex double test in magma!"<<endl;
+#endif
 }
 
 void D_Multi_Matrix_test()

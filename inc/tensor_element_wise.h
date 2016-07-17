@@ -200,6 +200,15 @@ namespace tensor_hao
     return flag;
  }
 
+ //for cout
+ template <class T, int D>
+ std::ostream& operator<< (std::ostream &out, const Tensor_core<T,D>& object)
+ {
+     out<<"Size: "<<object.size()<<"\n";
+     int L = object.size(); const T* object_p = object.data();
+     for (int i = 0; i<L; ++i) out<<object_p[i]<<" ";
+     return out;
+ }
 
 } //end namespace tensor_hao
 

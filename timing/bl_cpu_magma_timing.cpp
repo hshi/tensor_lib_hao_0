@@ -25,7 +25,7 @@ void gmm_float_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(c_cpu,c_magma,1e-4);
+    int flag=diff(c_cpu,c_magma,1e-4);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -54,7 +54,7 @@ void gmm_double_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(c_cpu,c_magma,1e-10);
+    int flag=diff(c_cpu,c_magma,1e-10);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -84,7 +84,7 @@ void gmm_complexfloat_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(c_cpu,c_magma,1e-4);
+    int flag=diff(c_cpu,c_magma,1e-4);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -114,7 +114,7 @@ void gmm_complexdouble_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(c_cpu,c_magma,1e-10);
+    int flag=diff(c_cpu,c_magma,1e-10);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -147,7 +147,7 @@ void eigen_double_timing(int N)
     eigen_magma(a_magma,w_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(w_cpu,w_magma,1e-10);
+    int flag=diff(w_cpu,w_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -185,7 +185,7 @@ void eigen_complexdouble_timing(int N)
     eigen_magma(a_magma,w_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(w_cpu,w_magma,1e-10);
+    int flag=diff(w_cpu,w_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -211,7 +211,7 @@ void LUconstruct_timing(int N)
     LUDecomp<complex<double>> LU_magma=LUconstruct_magma(X);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(LU_cpu.A, LU_magma.A,1e-10);
+    int flag=diff(LU_cpu.A, LU_magma.A,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl; 
 }
 
@@ -241,7 +241,7 @@ void inverse_timing(int N)
     A_magma=inverse_magma( LU_magma );
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(A_cpu, A_magma,1e-10);
+    int flag=diff(A_cpu, A_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -273,7 +273,7 @@ void solve_lineq_timing(int N, int M)
     A_magma=solve_lineq_magma( LU_magma , B);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=diff(A_cpu, A_magma,1e-10);
+    int flag=diff(A_cpu, A_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<M<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -303,7 +303,7 @@ void QRMatrix_timing(int N, int M)
     det_magma=QRMatrix_magma(ph_magma);
     magma_time = magma_wtime() - magma_time;
 
-    size_t flag=0; 
+    int flag=0; 
     for(int j=0; j<M; j++)
     {
         for(int i=0; i<N; i++) {if(abs(abs(ph_cpu(i,j))-abs(ph_magma(i,j)))>1e-10) flag++;}
