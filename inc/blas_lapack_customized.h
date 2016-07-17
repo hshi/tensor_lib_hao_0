@@ -84,6 +84,12 @@ void F77NAME(zgesdd)( const char* jobz, const int* m, const int* n,
              BLAS_LAPACK_Complex16* work, const int* lwork, double* rwork,
              int* iwork, int* info );
 
+void F77NAME(zgesvd)( const char* jobu, const char* jobvt, const int* m,
+             const int* n, BLAS_LAPACK_Complex16* a, const int* lda, double* s,
+             BLAS_LAPACK_Complex16* u, const int* ldu, BLAS_LAPACK_Complex16* vt,
+             const int* ldvt, BLAS_LAPACK_Complex16* work, const int* lwork,
+             double* rwork, int* info );
+
 void F77NAME(slarnv)( const int* idist, int* iseed, const int* n,
              float* x );
 

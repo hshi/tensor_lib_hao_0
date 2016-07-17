@@ -6,12 +6,10 @@ The c++ tensor library, it supports many dimension array and uses lapack blas li
 This project is licensed under the terms of the MIT license.
 
 * Which SVD is faster?
-* Add cout function
+* Check MAGMA website about QRMatrix GPU interface: http://icl.cs.utk.edu/magma/forum/viewforum.php?f=2
 
-* Test lapacke/cblas, mkl, and acml
 * Change all size_t to int
 * Update tensor_all.h
-* Update magma part, make it optional in CMAKELIST.TXT, IF FOUND THEN COMPILE THE PART
 * Check input about Tensor_core, output about Tensor_hao
 * Check about continuous memory for all code!!! (other libraries)
 * Check test <<endl; vs. "\n"

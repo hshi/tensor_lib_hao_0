@@ -323,6 +323,8 @@ namespace tensor_hao
 //QR GPU interface does not give correct det(R) in large system size. 
 //Though it works well for small system size. Need to use the
 //CPU interface!
+//Ask question in http://icl.cs.utk.edu/magma/forum/viewforum.php?f=2
+//It looks like GPU interface return some part of R in tau 
 
 /*
  double QRMatrix_magma(Tensor_core<complex<double>,2>& ph)

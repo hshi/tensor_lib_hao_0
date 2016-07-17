@@ -25,7 +25,20 @@ void gmm_float_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(c_cpu,c_magma,1e-4);
+    int flag=diff(c_cpu,c_magma,1e-4);  
+
+    //if(M==3136) 
+    //{
+    //    Tensor_hao<float,2> test=c_cpu-c_magma;
+    //    for(int j=0; j<N; j++)
+    //    {
+    //        for(int i=0; i<N; i++)
+    //        {
+    //            if(abs(test(i,j))> 1e-3) cout<<test(i,j)<<endl;
+    //        }
+    //    }
+    //}
+
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 

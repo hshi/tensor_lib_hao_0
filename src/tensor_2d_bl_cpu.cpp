@@ -253,6 +253,8 @@ namespace tensor_hao
  /*********************************************/
  /*SVD a matrix U = U D V, return U, D, and V*/
  /*********************************************/
+ //Use zgesdd instead of zgesvd, since zgesdd is faster for large matrix: http://www.netlib.org/lapack/lug/node32.html
+ //Test in Hurricane, zgesdd is faster.
  void SVDMatrix_cpu(Tensor_core<complex<double>,2>& U, Tensor_core<double,1>& D, Tensor_core<complex<double>,2>& V)
  {
      if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
@@ -281,5 +283,35 @@ namespace tensor_hao
          exit(1);
      }
  }
+/*
+ void SVDMatrix_cpu(Tensor_core<complex<double>,2>& U, Tensor_core<double,1>& D, Tensor_core<complex<double>,2>& V)
+ {
+     if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
+     {
+         cout<<"Size is not consistent in SVDMatrix_cpu! Only support square matrix."<<endl;
+         exit(1);
+     }
+
+     int m=U.rank(0); int n=V.rank(0);
+     char jobu='O'; char jobvt='A'; int lda=m;
+     complex<double>* u=nullptr; int ldu=1; int ldv=n;
+     complex<double> work_test[1]; int lwork=-1;
+     vector<double> rwork(5*m);
+     int info;
+
+     F77NAME(zgesvd)(&jobu, &jobvt, &m, &n, U.data(), &lda, D.data(), u, &ldu, V.data(), &ldv, work_test, &lwork, rwork.data(), &info);
+
+     lwork=lround(work_test[0].real());
+     vector<complex<double>> work(lwork);
+
+     F77NAME(zgesvd)(&jobu, &jobvt, &m, &n, U.data(), &lda, D.data(), u, &ldu, V.data(), &ldv, work.data(), &lwork, rwork.data(), &info);
+
+     if(info!=0)
+     {
+         cout<<"SVDMatrix_cpu is not suceesful, info= "<<info<<endl;
+         exit(1);
+     }
+ }
+*/
 
 } //end namespace tensor_hao
