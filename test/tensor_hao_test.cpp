@@ -205,6 +205,24 @@ void Tensor_hao_copy_ref_assignment_test()
 
 }
 
+void Tensor_hao_equal_T_test()
+{
+    Tensor_hao<double,3>  tensor(3,4,5);
+    int L = tensor.size();
+    double* p = tensor.data();
+    tensor=3.0;
+
+    int flag=0;
+    for(int i=0; i<L; i++)
+    {
+        if( std::abs( p[i]-3.0 ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"PASSED! Tensor_hao = T passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_hao = T failed double test!"<<endl;
+}
+
+
 void Tensor_hao_slice_test()
 {
     Tensor_hao<double,3>  tensor(3,4,5);
@@ -244,6 +262,7 @@ void Tensor_hao_test()
         Tensor_hao_copy_assignment_test();
         Tensor_hao_move_assignment_test();
         Tensor_hao_copy_ref_assignment_test();
+        Tensor_hao_equal_T_test();
         Tensor_hao_slice_test();
         cout<<endl;
     }

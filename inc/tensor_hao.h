@@ -22,7 +22,7 @@ namespace tensor_hao
     
      //Variadic template 
      template<typename... Values>
-     Tensor_hao(int input, Values... inputs)
+     explicit Tensor_hao(int input, Values... inputs)
      {
          int  len = sizeof...(Values);
          int vals[] = {input, inputs...};
@@ -107,6 +107,11 @@ namespace tensor_hao
          return *this;
      }
 
+     Tensor_hao<T, D> & operator  =  (T x) 
+     { 
+         for(int i=0; i<this->L; i++) this->p[i] = x;
+         return *this;
+     }
 
      //=========
      //FUNCTIONS

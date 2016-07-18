@@ -97,6 +97,25 @@ void Tensor_hao_ref_constructor_assginment_test()
 
 }
 
+void Tensor_hao_ref_equal_T_test()
+{
+    Tensor_hao<double,3>  tensor(3,4,5);
+    Tensor_hao_ref<double,3>  tensor_ref( tensor );
+    int L = tensor_ref.size();
+    double* p = tensor_ref.data();
+    tensor_ref=3.0;
+
+    int flag=0;
+    for(int i=0; i<L; i++)
+    {
+        if( std::abs( p[i]-3.0 ) > 1e-12 ) flag++;
+    }
+
+    if(flag==0) cout<<"PASSED! Tensor_hao_ref = T passed double test!"<<endl;
+    else cout<<"WARNING!!!!Tensor_hao_ref = T failed double test!"<<endl;
+}
+
+
 void Tensor_hao_ref_point_test()
 {
     Tensor_hao_ref<double,2> tensor_ref(5,8), tensor_ref_p(5,8);
@@ -146,6 +165,7 @@ void Tensor_hao_ref_test()
         Tensor_hao_ref_variadic_constructor_test();
         Tensor_hao_ref_pointer_constructor_test();
         Tensor_hao_ref_constructor_assginment_test();
+        Tensor_hao_ref_equal_T_test();
         Tensor_hao_ref_point_test();
         Tensor_hao_ref_slice_test();
         cout<<endl;
