@@ -324,8 +324,8 @@ namespace tensor_hao
 //Though it works well for small system size. Need to use the
 //CPU interface!
 //Ask question in http://icl.cs.utk.edu/magma/forum/viewforum.php?f=2
-//It looks like GPU interface return some part of R in tau 
-
+//It looks like GPU interface return some part of R in tau, we need some
+//extra work to get Det(R), read the post in magma forum for details! 
 /*
  double QRMatrix_magma(Tensor_core<complex<double>,2>& ph)
  {
