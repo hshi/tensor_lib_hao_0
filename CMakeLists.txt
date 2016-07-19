@@ -46,12 +46,13 @@ set(lib_all "")
    set(lib_all ${lapackblas_libraries} ${lib_all})
    
    #For magma library
-   find_package(CUDA)
-   find_package(magma)
-   if(CUDA_FOUND AND MAGMA_FOUND)
+   if(USE_MAGMA)
      message("-- Use MAGMA library." )
      add_definitions(-DUSE_MAGMA)
+     # Use standard FindCUD
+     find_package(CUDA REQUIRED)
      include_directories(${CUDA_INCLUDE_DIRS})
+     find_package(magma REQUIRED)
      include_directories(${magma_include_dirs})
      set(gpu_libraries "${magma_libraries}" ${CUDA_LIBRARIES} ${CUDA_CUBLAS_LIBRARIES})
    else()
