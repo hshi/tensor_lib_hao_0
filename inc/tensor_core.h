@@ -49,10 +49,10 @@ namespace tensor_hao
      inline const T * data() const {return p;}
      inline       T * data()       {return p;}
 
-     //Return reference to pointer
-     inline const T *& data_ref() const {return p;}
-     inline       T *& data_ref()       {return p;}
-
+     //COMMET THIS LINE, IT IS NOT A SAFE FUNCTION
+     //Return reference to pointer: it can be used as T *& A_p = A.data_ref();
+     //inline const T *& data_ref() const {return p;}
+     //inline       T *& data_ref()       {return p;}
 
 
      //=======================================================================
@@ -236,6 +236,8 @@ namespace tensor_hao
 
   friend class Tensor_hao_ref<T,D>;
   friend class Tensor_hao<T,D>;
+  friend class Tensor_hao_ref<T,D+1>;
+  friend class Tensor_hao<T,D+1>;
 
  };  //end class Tensor_core
 

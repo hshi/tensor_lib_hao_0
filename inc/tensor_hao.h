@@ -130,8 +130,7 @@ namespace tensor_hao
              exit(1);
          }
          Tensor_hao_ref<T, D-1> A (this->n);
-         T *& A_p = A.data_ref();
-         A_p = this->p + i * this->n_step[D-1];
+         A.p = this->p + i * this->n_step[D-1];
          return A;
      }
 
