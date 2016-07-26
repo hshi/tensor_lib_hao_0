@@ -12,6 +12,11 @@ void Tensor_hao_void_constructor_test()
 {
     Tensor_hao<double,2>  tensor;
     int flag=0;
+    for(int i=0; i<2; i++)
+    {
+        if( tensor.rank(i)      !=0 ) flag++;
+        if( tensor.rank_step(i) !=0 ) flag++;
+    }
     if(tensor.data() ) flag++;
     if(tensor.size() !=0 ) flag++;
 

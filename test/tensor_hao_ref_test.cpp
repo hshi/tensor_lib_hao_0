@@ -12,6 +12,11 @@ void Tensor_hao_ref_void_constructor_test()
 {
     Tensor_hao_ref<double,2>  tensor_ref;
     int flag=0;
+    for(int i=0; i<2; i++)
+    {
+        if( tensor_ref.rank(i)      !=0 ) flag++;
+        if( tensor_ref.rank_step(i) !=0 ) flag++;
+    }
     if(tensor_ref.data() ) flag++;
     if(tensor_ref.size() !=0 ) flag++;
 

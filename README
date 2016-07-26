@@ -8,3 +8,6 @@ This project is licensed under the terms of the MIT license.
 Note to myself for developing or updating the library.
 1. If we want to pass any "const Tensor_hao&", it is better to pass "const Tensor_core&", then this argument can be "const Tensor_hao_ref&"
 2. If we want to pass any "Tensor_hao&&", do not use "Tensor_core&&"! Tensor_hao_ref does not own the memory.
+
+
+* data_ref is pretty dangerous, remove it!!!

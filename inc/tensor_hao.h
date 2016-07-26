@@ -17,6 +17,11 @@ namespace tensor_hao
 
      Tensor_hao(void): Tensor_core<T,D>() 
      {
+         for(int i=0; i<D; i++) 
+         {
+            this->n[i]=0;
+            this->n_step[i]=0;
+         }
          //std::cout<<"In Tensor_hao void constructor "<<std::endl;
      }
     
