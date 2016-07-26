@@ -232,7 +232,7 @@ namespace tensor_hao
   private:
      //Avoid program to generater constructor and assigment for Tensor_core. (Suppose to be an abstract class.)
      Tensor_core(const Tensor_core<T,D>& x)  { }
-     Tensor_core<T,D> & operator  = (const Tensor_core<T,D>& x) { }
+     Tensor_core<T,D> & operator  = (const Tensor_core<T,D>& x) { return *this; }
 
   friend class Tensor_hao_ref<T,D>;
   friend class Tensor_hao<T,D>;
