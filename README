@@ -11,7 +11,13 @@ Note to myself for developing or updating the library.
 
 
 
-Output about timing, use as a guideline about when to use MAGMA. (Make your own test on your platform.)
+================================================================
+Output about timing, use as a guideline about when to use MAGMA.
+================================================================ 
+processor:   2 x quad-core Xeon X5672, 3.2 GHz, 12 MB L3 cache
+Main Memory: 48 GB 1333 MHz
+GPU: 2 x NVIDIA Tesla M2075, 1.15 GHz, 448 CUDA cores
+Run 8 job in one nodes, each CPU job use one core, four GPU job share on NVIDIA Tesla M2075.
 
 This timing program compares time cost between CPU blas lapack and MAGMA blas lapack.
 The flag represents number of difference elements between results from CPU and these from MAGMA.
