@@ -42,6 +42,18 @@ namespace tensor_hao
  }
 
  template <class T, int D>
+ Tensor_hao<T, D> sqrt(const Tensor_core<T, D>& A)
+ {
+     Tensor_hao<T, D> B ( A.n_ptr() );
+     int L = A.size();
+     const T * A_p = A.data();
+           T * B_p = B.data();
+     for(int i=0; i<L; i++) B_p[i] = std::sqrt( A_p[i] );
+     return B;
+ }
+
+
+ template <class T, int D>
  Tensor_hao<T, D> operator - (const Tensor_core<T, D>& A)
  {
      Tensor_hao<T, D> B ( A.n_ptr() );
