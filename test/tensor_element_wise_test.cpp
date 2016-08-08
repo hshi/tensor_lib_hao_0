@@ -47,6 +47,27 @@ void tensor_exp_test()
 
 }
 
+void tensor_norm_test()
+{
+    Tensor_hao< complex<double>,2>  tensor_a(3,2);
+    tensor_a={ {1.0 ,2.0} , {3.0 ,4.0} , {5.0 ,6.0} , {7.0 ,8.0} , {9.0 ,10.0} , {11.0 ,12.0} };
+
+    Tensor_hao< complex<double>,2> tensor_b = norm( tensor_a );
+
+    int flag=0;
+    for(int j=0; j<2; j++)
+    {
+        for(int i=0; i<3; i++)
+        {
+            if( std::abs( tensor_b(i,j)-norm( tensor_a(i,j) ) ) >1e-12 ) flag++;
+        }
+    }
+    if(flag==0) cout<<"PASSED! Tensor norm passed complex<double> test!"<<endl;
+    else cout<<"WARNING!!!!Tensor norm failed complex<double> test!"<<endl;
+
+}
+
+
 void tensor_minus_test()
 {
     Tensor_hao<double,2>  tensor_a(3,4);
@@ -289,6 +310,7 @@ void Tensor_element_wise_test()
     {
         tensor_conj_test();
         tensor_exp_test();
+        tensor_norm_test();
         tensor_minus_test();
         Tensor_add_Tensor_test();
         Tensor_minus_Tensor_test();
