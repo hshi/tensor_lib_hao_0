@@ -522,9 +522,9 @@ void Tensor_core_sum_test()
     Tensor_hao< complex<double>,2>  tensor_a(3,2);
     tensor_a={ {1.0 ,2.0} , {3.0 ,4.0} , {5.0 ,6.0} , {7.0 ,8.0} , {9.0 ,10.0} , {11.0 ,12.0} };
 
-    complex<double> exact(36., 42.0);
+    complex<double> exact(15., 18.0);
 
-    if( abs( tensor_a.sum() - exact ) < 1e-12 )  cout<<"PASSED! Tensor_core sum passed complex double test!"<<endl; 
+    if( abs( tensor_a.sum(0, 5, 2) - exact ) < 1e-12 )  cout<<"PASSED! Tensor_core sum passed complex double test!"<<endl; 
     else  cout<<"WARNING!!!! Tensor_core sum failed complex double test!"<<endl; 
 }
 
@@ -533,9 +533,9 @@ void Tensor_core_mean_test()
     Tensor_hao< complex<double>,2>  tensor_a(3,2);
     tensor_a={ {1.0 ,2.0} , {3.0 ,4.0} , {5.0 ,6.0} , {7.0 ,8.0} , {9.0 ,10.0} , {11.0 ,12.0} };
 
-    complex<double> exact(6., 7.0);
+    complex<double> exact(5., 6.0);
 
-    if( abs( tensor_a.mean() - exact ) < 1e-12 )  cout<<"PASSED! Tensor_core mean passed complex double test!"<<endl;
+    if( abs( tensor_a.mean(0, 5, 2) - exact ) < 1e-12 )  cout<<"PASSED! Tensor_core mean passed complex double test!"<<endl;
     else  cout<<"WARNING!!!! Tensor_core mean failed complex double test!"<<endl; 
 }
 

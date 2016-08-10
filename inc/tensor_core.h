@@ -215,18 +215,27 @@ namespace tensor_hao
      inline void operator /=   (T x) { for(int i=0; i<L; i++) p[i] /= x;      }
      inline void inv_div_equal (T x) { for(int i=0; i<L; i++) p[i] =  x/p[i]; }
 
-     inline T sum() const 
+     T sum(int begin = -1, int end = -1, int step = 1) const 
      {
+         if( begin < 0 ) begin = 0;
+         if( end   < 0 ) end   = L;
          T sum_all = 0;
-         for(int i=0; i<L; i++) sum_all += p[i];
+         for(int i=begin; i<end; i+=step) sum_all += p[i];
          return sum_all;
      }
 
-     inline T mean() const
+     T mean(int begin = -1, int end = -1, int step = 1) const
      {
+         if( begin < 0 ) begin = 0;
+         if( end   < 0 ) end   = L;
+
+         int number_of_points;
+         if( ( (end-begin)%step )==0  ) number_of_points = (end-begin)/step;
+         else   number_of_points = (end-begin)/step+1;
+
          T mean_all = 0;
-         for(int i=0; i<L; i++) mean_all += p[i];
-         return mean_all/(L*1.0);
+         for(int i=begin; i<end; i+=step) mean_all += p[i];
+         return mean_all / ( number_of_points * 1.0 );
      }
 
 
