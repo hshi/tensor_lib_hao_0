@@ -64,6 +64,8 @@ add_subdirectory(inc)
 
 add_subdirectory(src)
 
+add_subdirectory(bin)
+
 add_subdirectory(test)
 
 add_subdirectory(timing)
