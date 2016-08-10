@@ -215,6 +215,21 @@ namespace tensor_hao
      inline void operator /=   (T x) { for(int i=0; i<L; i++) p[i] /= x;      }
      inline void inv_div_equal (T x) { for(int i=0; i<L; i++) p[i] =  x/p[i]; }
 
+     inline T sum() const 
+     {
+         T sum_all = 0;
+         for(int i=0; i<L; i++) sum_all += p[i];
+         return sum_all;
+     }
+
+     inline T mean() const
+     {
+         T mean_all = 0;
+         for(int i=0; i<L; i++) mean_all += p[i];
+         return mean_all/(L*1.0);
+     }
+
+
   protected:
      void copy_list(const std::initializer_list <T> &args)
      {
